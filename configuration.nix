@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -20,6 +20,9 @@
     enable = true;
     wayland.enable = true;
   };
+
+  # Override dbus-broker forced by UWSM — it can break SDDM activation
+  services.dbus.implementation = lib.mkForce "dbus";
 
   # AMD GPU
   hardware.graphics = {
