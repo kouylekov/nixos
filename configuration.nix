@@ -104,8 +104,6 @@
           telescope-nvim
           plenary-nvim
 
-          # LSP
-          nvim-lspconfig
 
           # Autocompletion
           nvim-cmp
@@ -133,11 +131,12 @@
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
-        -- Treesitter setup
-        require('nvim-treesitter.configs').setup {
-          highlight = { enable = true },
-          indent = { enable = true },
-        }
+        -- Enable treesitter highlighting (grammars pre-compiled by Nix)
+        vim.api.nvim_create_autocmd("FileType", {
+          callback = function()
+            pcall(vim.treesitter.start)
+          end,
+        })
 
         -- Autocompletion setup
         local cmp = require('cmp')
@@ -183,11 +182,15 @@
           }),
         }
 
-        -- LSP setup with completion capabilities
+        -- LSP setup with completion capabilities (Neovim 0.11+ native API)
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
-        require('lspconfig').pyright.setup {
+        vim.lsp.config['pyright'] = {
+          cmd = { 'pyright-langserver', '--stdio' },
+          filetypes = { 'python' },
+          root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
           capabilities = capabilities,
         }
+        vim.lsp.enable('pyright')
 
         -- LSP keymaps
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
@@ -236,6 +239,23 @@
     fastfetch
     python3
     pyright
+
+    # Hyprland ecosystem
+    hyprpaper           # wallpaper
+    hypridle            # idle daemon
+    hyprlock            # lock screen
+    mako                # notifications
+    grim                # screenshots
+    slurp               # region selection
+    wl-clipboard        # clipboard
+    cliphist            # clipboard history
+    brightnessctl       # brightness control
+    playerctl           # media control
+    pavucontrol         # audio control GUI
+    networkmanagerapplet # network tray
+    blueman             # bluetooth
+    libnotify           # notify-send
+    jq                  # JSON parsing for scripts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
