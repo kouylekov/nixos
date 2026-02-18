@@ -124,11 +124,16 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    pkgs.waybar
-    pkgs.fuzzel
-    pkgs.alacritty
-    pkgs.xdg-desktop-portal-hyprland    
-    pkgs.claude-code
+    waybar
+    fuzzel
+    alacritty
+    xdg-desktop-portal-hyprland
+    claude-code
+    discord
+    mumble
+    teams-for-linux
+    fastfetch
+    python3
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
