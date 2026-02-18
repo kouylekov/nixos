@@ -14,7 +14,6 @@
     "hypr/hyprland.conf".source = link "hypr/hyprland.conf";
     "hypr/hypridle.conf".source = link "hypr/hypridle.conf";
     "hypr/hyprlock.conf".source = link "hypr/hyprlock.conf";
-    "hypr/hyprpaper.conf".source = link "hypr/hyprpaper.conf";
     "mako/config".source = link "mako/config";
     "waybar/config".source = link "waybar/config";
     "waybar/style.css".source = link "waybar/style.css";

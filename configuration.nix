@@ -219,7 +219,6 @@
     pyright
 
     # Hyprland ecosystem
-    hyprpaper           # wallpaper
     hypridle            # idle daemon
     hyprlock            # lock screen
     mako                # notifications
