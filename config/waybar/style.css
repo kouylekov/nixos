@@ -1,0 +1,177 @@
+/* Tokyo Night inspired Waybar theme */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Ubuntu Nerd Font", monospace;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+window#waybar {
+    background: rgba(26, 27, 38, 0.9);
+    border-radius: 12px;
+    border: 2px solid rgba(122, 162, 247, 0.3);
+    color: #c0caf5;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces {
+    background: rgba(41, 46, 66, 0.8);
+    border-radius: 10px;
+    margin: 4px;
+    padding: 0 4px;
+}
+
+#workspaces button {
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 8px;
+    color: #565f89;
+    background: transparent;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background: rgba(122, 162, 247, 0.2);
+    color: #7aa2f7;
+}
+
+#workspaces button.active {
+    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+    color: #1a1b26;
+}
+
+#workspaces button.urgent {
+    background: #f7768e;
+    color: #1a1b26;
+}
+
+#window {
+    margin: 4px;
+    padding: 4px 12px;
+    background: rgba(41, 46, 66, 0.8);
+    border-radius: 10px;
+    color: #a9b1d6;
+}
+
+#window.empty {
+    background: transparent;
+}
+
+#clock {
+    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+    color: #1a1b26;
+    padding: 4px 16px;
+    margin: 4px;
+    border-radius: 10px;
+}
+
+#language {
+    background: rgba(158, 206, 106, 0.2);
+    color: #9ece6a;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#cpu {
+    background: rgba(224, 175, 104, 0.2);
+    color: #e0af68;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#memory {
+    background: rgba(187, 154, 247, 0.2);
+    color: #bb9af7;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#battery {
+    background: rgba(158, 206, 106, 0.2);
+    color: #9ece6a;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#battery.charging {
+    background: rgba(158, 206, 106, 0.3);
+    color: #9ece6a;
+}
+
+#battery.warning:not(.charging) {
+    background: rgba(224, 175, 104, 0.3);
+    color: #e0af68;
+}
+
+#battery.critical:not(.charging) {
+    background: rgba(247, 118, 142, 0.3);
+    color: #f7768e;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background: rgba(247, 118, 142, 0.6);
+    }
+}
+
+#network {
+    background: rgba(122, 162, 247, 0.2);
+    color: #7aa2f7;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#network.disconnected {
+    background: rgba(247, 118, 142, 0.2);
+    color: #f7768e;
+}
+
+#pulseaudio {
+    background: rgba(125, 207, 255, 0.2);
+    color: #7dcfff;
+    padding: 4px 10px;
+    margin: 4px 2px;
+    border-radius: 10px;
+}
+
+#pulseaudio.muted {
+    background: rgba(86, 95, 137, 0.2);
+    color: #565f89;
+}
+
+#tray {
+    background: rgba(41, 46, 66, 0.8);
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 10px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: rgba(247, 118, 142, 0.2);
+}
+
+tooltip {
+    background: rgba(26, 27, 38, 0.95);
+    border: 2px solid rgba(122, 162, 247, 0.3);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: #c0caf5;
+    padding: 4px;
+}
