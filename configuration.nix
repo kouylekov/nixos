@@ -16,12 +16,9 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Display manager
-  services.greetd = {
+  services.displayManager.sddm = {
     enable = true;
-    settings.default_session = {
-      command = "uwsm start hyprland-uwsm.desktop";
-      user = "milen";
-    };
+    wayland.enable = true;
   };
 
   # AMD GPU
