@@ -48,6 +48,13 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+  # Home Manager
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.milen = import ./home.nix;
+  };
+
   fonts.packages = with pkgs; [
   nerd-fonts.fira-code
   nerd-fonts.droid-sans-mono
