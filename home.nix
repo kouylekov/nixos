@@ -5,17 +5,19 @@
   home.homeDirectory = "/home/milen";
   home.stateVersion = "25.11";
 
-  # Dotfile management
-  xdg.configFile = {
-    "alacritty/alacritty.toml".source = ./config/alacritty/alacritty.toml;
-    "fuzzel/fuzzel.ini".source = ./config/fuzzel/fuzzel.ini;
-    "hypr/hyprland.conf".source = ./config/hypr/hyprland.conf;
-    "hypr/hypridle.conf".source = ./config/hypr/hypridle.conf;
-    "hypr/hyprlock.conf".source = ./config/hypr/hyprlock.conf;
-    "hypr/hyprpaper.conf".source = ./config/hypr/hyprpaper.conf;
-    "mako/config".source = ./config/mako/config;
-    "waybar/config".source = ./config/waybar/config;
-    "waybar/style.css".source = ./config/waybar/style.css;
+  # Dotfile management - symlink directly to repo for live editing
+  xdg.configFile = let
+    link = path: config.lib.file.mkOutOfStoreSymlink "/home/milen/nixos/config/${path}";
+  in {
+    "alacritty/alacritty.toml".source = link "alacritty/alacritty.toml";
+    "fuzzel/fuzzel.ini".source = link "fuzzel/fuzzel.ini";
+    "hypr/hyprland.conf".source = link "hypr/hyprland.conf";
+    "hypr/hypridle.conf".source = link "hypr/hypridle.conf";
+    "hypr/hyprlock.conf".source = link "hypr/hyprlock.conf";
+    "hypr/hyprpaper.conf".source = link "hypr/hyprpaper.conf";
+    "mako/config".source = link "mako/config";
+    "waybar/config".source = link "waybar/config";
+    "waybar/style.css".source = link "waybar/style.css";
   };
 
   programs.home-manager.enable = true;
