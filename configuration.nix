@@ -256,6 +256,7 @@
     blueman             # bluetooth
     libnotify           # notify-send
     jq                  # JSON parsing for scripts
+    ranger              # terminal file manager
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
