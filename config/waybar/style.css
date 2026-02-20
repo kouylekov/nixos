@@ -40,7 +40,7 @@ window#waybar.hidden {
 }
 
 #workspaces button.active {
-    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+    background: #7aa2f7;
     color: #1a1b26;
 }
 
@@ -62,7 +62,7 @@ window#waybar.hidden {
 }
 
 #clock {
-    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+    background: #7aa2f7;
     color: #1a1b26;
     padding: 4px 16px;
     margin: 4px;
