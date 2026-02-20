@@ -216,7 +216,27 @@
     teams-for-linux
     fastfetch
     python3
+    go
+    gcc
+
+    # Neovim LSP servers
     pyright
+    gopls
+    golangci-lint-langserver
+    golangci-lint
+
+    # Neovim formatters
+    stylua
+    isort
+    black
+    ruff
+
+    # Neovim linters
+    pylint
+
+    # Neovim telescope dependencies
+    ripgrep
+    fd
 
     # Hyprland ecosystem
     hypridle            # idle daemon
