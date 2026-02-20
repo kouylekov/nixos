@@ -8,6 +8,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -192,7 +193,14 @@
 
   programs.steam = {
     enable = true;
+    gamescopeSession.enable = true;
+    remotePlay.openFirewall = true;
+    extraCompatPackages = with pkgs; [ proton-ge-bin ];
   };
+
+  programs.gamemode.enable = true;
+  programs.gamescope.enable = true;
+  programs.corectrl.enable = true;
 
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -237,6 +245,13 @@
     # Neovim telescope dependencies
     ripgrep
     fd
+
+    # Gaming
+    mangohud
+    protonup-qt
+    lutris
+    wine
+    winetricks
 
     # Hyprland ecosystem
     hypridle            # idle daemon
