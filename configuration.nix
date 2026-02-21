@@ -216,6 +216,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    sddm-astronaut
     waybar
     fuzzel
     alacritty
