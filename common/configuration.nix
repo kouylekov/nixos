@@ -254,6 +254,10 @@
     # VPN
     sshuttle
 
+    # Spell checking
+    aspell
+    aspellDicts.en
+
     # Communication
     pkgs-matterhorn.matterhorn
     zoom-us
