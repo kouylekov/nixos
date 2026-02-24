@@ -36,8 +36,14 @@
     winetricks
   ];
 
-  # Desktop keyboard layout (us, bg)
-  home-manager.users.milen.xdg.configFile."hypr/input.conf".source =
-    config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
-      "/home/milen/nixos/config/hypr/input-desktop.conf";
+  home-manager.users.milen.xdg.configFile = {
+    # Desktop keyboard layout (us, bg)
+    "hypr/input.conf".source =
+      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
+        "/home/milen/nixos/config/hypr/input-desktop.conf";
+    # Desktop monitors (dual)
+    "hypr/monitors.conf".source =
+      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
+        "/home/milen/nixos/config/hypr/monitors-desktop.conf";
+  };
 }

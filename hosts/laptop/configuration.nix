@@ -38,8 +38,14 @@
     "/etc/nixos/secrets/wifi.env"
   ];
 
-  # Laptop keyboard layout (no, us, bg)
-  home-manager.users.milen.xdg.configFile."hypr/input.conf".source =
-    config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
-      "/home/milen/nixos/config/hypr/input-laptop.conf";
+  home-manager.users.milen.xdg.configFile = {
+    # Laptop keyboard layout (no, us, bg)
+    "hypr/input.conf".source =
+      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
+        "/home/milen/nixos/config/hypr/input-laptop.conf";
+    # Laptop monitors (built-in + external)
+    "hypr/monitors.conf".source =
+      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
+        "/home/milen/nixos/config/hypr/monitors-laptop.conf";
+  };
 }
