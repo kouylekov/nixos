@@ -1,16 +1,9 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Oslo";
@@ -26,12 +19,6 @@
 
   # Override dbus-broker forced by UWSM — it can break SDDM activation
   services.dbus.implementation = lib.mkForce "dbus";
-
-  # AMD GPU
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
 
   services.printing.enable = true;
 
@@ -59,20 +46,20 @@
   };
 
   fonts.packages = with pkgs; [
-  nerd-fonts.fira-code
-  nerd-fonts.droid-sans-mono
-  nerd-fonts.jetbrains-mono
-  nerd-fonts.adwaita-mono
-  nerd-fonts.bitstream-vera-sans-mono
-  nerd-fonts.code-new-roman
-  nerd-fonts.noto
-  nerd-fonts.symbols-only
-  nerd-fonts.terminess-ttf
-  nerd-fonts.ubuntu
-  nerd-fonts.ubuntu-mono
-  nerd-fonts.ubuntu-sans
-  nerd-fonts.sauce-code-pro
- ];
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.adwaita-mono
+    nerd-fonts.bitstream-vera-sans-mono
+    nerd-fonts.code-new-roman
+    nerd-fonts.noto
+    nerd-fonts.symbols-only
+    nerd-fonts.terminess-ttf
+    nerd-fonts.ubuntu
+    nerd-fonts.ubuntu-mono
+    nerd-fonts.ubuntu-sans
+    nerd-fonts.sauce-code-pro
+  ];
 
   programs.neovim = {
     enable = true;
@@ -85,7 +72,6 @@
           # Telescope and dependencies
           telescope-nvim
           plenary-nvim
-
 
           # Autocompletion
           nvim-cmp
@@ -193,17 +179,6 @@
     xwayland.enable = true;
   };
 
-  programs.steam = {
-    enable = true;
-    gamescopeSession.enable = true;
-    remotePlay.openFirewall = true;
-    extraCompatPackages = with pkgs; [ proton-ge-bin ];
-  };
-
-  programs.gamemode.enable = true;
-  programs.gamescope.enable = true;
-  programs.corectrl.enable = true;
-
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
 
@@ -249,31 +224,23 @@
     ripgrep
     fd
 
-    # Gaming
-    mangohud
-    protonup-qt
-    lutris
-    wine
-    winetricks
-
     # Hyprland ecosystem
-    hypridle            # idle daemon
-    hyprlock            # lock screen
-    mako                # notifications
-    grim                # screenshots
-    slurp               # region selection
-    wl-clipboard        # clipboard
-    cliphist            # clipboard history
-    brightnessctl       # brightness control
-    playerctl           # media control
-    pavucontrol         # audio control GUI
-    networkmanagerapplet # network tray
-    blueman             # bluetooth
-    libnotify           # notify-send
-    jq                  # JSON parsing for scripts
-    ranger              # terminal file manager
+    hypridle
+    hyprlock
+    mako
+    grim
+    slurp
+    wl-clipboard
+    cliphist
+    brightnessctl
+    playerctl
+    pavucontrol
+    networkmanagerapplet
+    blueman
+    libnotify
+    jq
+    ranger
   ];
 
   system.stateVersion = "25.11";
-
 }
