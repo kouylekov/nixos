@@ -19,5 +19,22 @@
     "waybar/style.css".source = link "waybar/style.css";
   };
 
+  # Dark theme
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+  };
+
+  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
+  };
+
   programs.home-manager.enable = true;
 }
