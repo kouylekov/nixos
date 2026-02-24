@@ -240,6 +240,9 @@
     libnotify
     jq
     ranger
+
+    # VPN
+    sshuttle
   ];
 
   system.stateVersion = "25.11";
