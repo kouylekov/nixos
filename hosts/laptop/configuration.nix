@@ -44,6 +44,13 @@
     "/etc/nixos/secrets/wifi.env"
   ];
 
+  # Lid close behavior
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "lock";
+    lidSwitchDocked = "ignore";
+  };
+
   home-manager.users.milen.xdg.configFile = {
     # Laptop keyboard layout (no, us, bg)
     "hypr/input.conf".source =

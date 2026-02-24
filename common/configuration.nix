@@ -22,6 +22,11 @@
 
   services.printing.enable = true;
   services.flatpak.enable = true;
+  services.fwupd.enable = true;
+
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   # Audio
   services.pulseaudio.enable = false;
