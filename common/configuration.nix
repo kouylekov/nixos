@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -255,6 +255,7 @@
     sshuttle
 
     # Communication
+    pkgs-matterhorn.matterhorn
     zoom-us
   ];
 
