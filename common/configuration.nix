@@ -245,7 +245,6 @@
     sshuttle
 
     # Communication
-    matterhorn
     zoom-us
   ];
 
