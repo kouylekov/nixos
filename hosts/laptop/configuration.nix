@@ -37,4 +37,9 @@
   networking.networkmanager.ensureProfiles.environmentFiles = [
     "/etc/nixos/secrets/wifi.env"
   ];
+
+  # Laptop keyboard layout (no, us, bg)
+  home-manager.users.milen.xdg.configFile."hypr/input.conf".source =
+    config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
+      "/home/milen/nixos/config/hypr/input-laptop.conf";
 }
