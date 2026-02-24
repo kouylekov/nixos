@@ -174,6 +174,9 @@
 
   programs.git.enable = true;
 
+  # SSH agent
+  programs.ssh.startAgent = true;
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;
