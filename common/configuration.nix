@@ -258,6 +258,12 @@
     aspell
     aspellDicts.en
 
+    # Dev tools
+    vault
+    mise
+    pre-commit
+    openshift
+
     # Communication
     pkgs-matterhorn.matterhorn
     zoom-us
