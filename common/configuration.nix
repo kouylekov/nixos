@@ -21,6 +21,7 @@
   services.dbus.implementation = lib.mkForce "dbus";
 
   services.printing.enable = true;
+  services.flatpak.enable = true;
 
   # Audio
   services.pulseaudio.enable = false;
