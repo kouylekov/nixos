@@ -18,10 +18,7 @@
     "waybar/config".source = link "waybar/config";
     "waybar/style.css".source = link "waybar/style.css";
     "matterhorn/config.ini".source = link "matterhorn/config.ini";
-    "matterhorn/notify" = {
-      source = link "matterhorn/notify";
-      executable = true;
-    };
+    "matterhorn/notify".source = link "matterhorn/notify";
   };
 
   # Dark theme
