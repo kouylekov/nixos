@@ -18,6 +18,12 @@
   # Eduroam — run `geteduroam` once to configure via UiO's portal
   environment.systemPackages = [ pkgs.geteduroam ];
 
+  # Podman
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+
   # Home WiFi
   networking.networkmanager.ensureProfiles.profiles.milves = {
     connection = {

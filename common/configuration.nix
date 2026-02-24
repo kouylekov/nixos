@@ -243,6 +243,10 @@
 
     # VPN
     sshuttle
+
+    # Communication
+    matterhorn
+    zoom-us
   ];
 
   system.stateVersion = "25.11";
