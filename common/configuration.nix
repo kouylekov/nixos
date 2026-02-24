@@ -263,6 +263,7 @@
     mise
     pre-commit
     openshift
+    btop
 
     # Communication
     pkgs-matterhorn.matterhorn
