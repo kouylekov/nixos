@@ -41,5 +41,17 @@
     style.name = "adwaita-dark";
   };
 
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      __git_branch() {
+        local branch
+        branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+        echo " ($branch)"
+      }
+      PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
+    '';
+  };
+
   programs.home-manager.enable = true;
 }

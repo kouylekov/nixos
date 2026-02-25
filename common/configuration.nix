@@ -91,6 +91,25 @@
 
           # Treesitter
           nvim-treesitter.withAllGrammars
+
+          # Formatting, linting, diagnostics
+          conform-nvim
+          nvim-lint
+          trouble-nvim
+
+          # Git
+          gitsigns-nvim
+          neogit
+          diffview-nvim
+
+          # UI
+          nightfox-nvim
+          lualine-nvim
+          nvim-web-devicons
+          nvim-colorizer-lua
+
+          # Editing
+          nvim-autopairs
         ];
       };
       customRC = ''
@@ -99,12 +118,90 @@
         vim.g.mapleader = " "
         vim.g.maplocalleader = " "
 
+        -- Editor settings
+        local o = vim.opt
+        o.number = true
+        o.relativenumber = true
+        o.clipboard = 'unnamedplus'
+        o.autoindent = true
+        o.cursorline = true
+        o.expandtab = true
+        o.shiftwidth = 2
+        o.tabstop = 2
+        o.mouse = 'a'
+        o.splitright = true
+        o.splitbelow = true
+        o.termguicolors = true
+        o.spell = true
+        o.spelllang = 'en_us'
+        vim.diagnostic.config({ virtual_text = true })
+
+        -- Code folding with treesitter
+        o.foldmethod = 'expr'
+        o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+        o.foldlevel = 99
+        o.foldlevelstart = 99
+        o.foldenable = true
+        o.foldcolumn = '1'
+
+        -- Colorscheme
+        require('nightfox').setup({ options = { transparent = true } })
+        vim.cmd('colorscheme terafox')
+
+        -- Statusline
+        require('lualine').setup({
+          options = {
+            globalstatus = true,
+            icons_enabled = true,
+            component_separators = { left = '|', right = '|' },
+            section_separators = { left = "", right = "" },
+            theme = 'terafox',
+          },
+          sections = {
+            lualine_a = { { 'mode', fmt = function(str) return ' ' .. str:sub(1, 1) .. ' ' end } },
+            lualine_b = {
+              { 'branch', icon = "" },
+              { 'diff', symbols = { added = '+', modified = '~', removed = '-' } },
+              'diagnostics',
+            },
+            lualine_c = { { 'filename', path = 1, symbols = { modified = ' ●', readonly = "" } } },
+            lualine_x = { 'lsp_status', 'encoding', 'fileformat', 'filetype' },
+            lualine_y = { 'progress', 'location' },
+            lualine_z = { function() return ' ' .. os.date('%R') .. ' ' end },
+          },
+        })
+
+        -- Git signs
+        require('gitsigns').setup({
+          signs = {
+            add          = { text = '│' },
+            change       = { text = '│' },
+            delete       = { text = '_' },
+            topdelete    = { text = '‾' },
+            changedelete = { text = '~' },
+            untracked    = { text = '┆' },
+          },
+          current_line_blame = false,
+          current_line_blame_opts = { virt_text_pos = 'eol', delay = 1000 },
+        })
+
+        -- Neogit
+        require('neogit').setup({})
+
+        -- Autopairs
+        require('nvim-autopairs').setup({ disable_filetype = { 'TelescopePrompt', 'vim' } })
+
+        -- Colorizer (inline color preview)
+        require('colorizer').setup({ '*' })
+
         -- Telescope keymaps
         local builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
         vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+        vim.keymap.set('n', '<leader>fs', builtin.git_status, {})
+        vim.keymap.set('n', '<leader>fc', builtin.git_commits, {})
 
         -- Enable treesitter highlighting (grammars pre-compiled by Nix)
         vim.api.nvim_create_autocmd("FileType", {
@@ -159,13 +256,63 @@
 
         -- LSP setup with completion capabilities (Neovim 0.11+ native API)
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+        -- Pyright: type checking, hover, go-to-definition, references
         vim.lsp.config['pyright'] = {
           cmd = { 'pyright-langserver', '--stdio' },
           filetypes = { 'python' },
           root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
           capabilities = capabilities,
+          settings = {
+            python = {
+              pythonPath = vim.env.VIRTUAL_ENV and (vim.env.VIRTUAL_ENV .. '/bin/python') or nil,
+              venvPath = vim.env.VIRTUAL_ENV and vim.fs.dirname(vim.env.VIRTUAL_ENV) or nil,
+              venv = vim.env.VIRTUAL_ENV and vim.fs.basename(vim.env.VIRTUAL_ENV) or nil,
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
         }
         vim.lsp.enable('pyright')
+
+        -- Ruff: fast linting diagnostics and formatting via LSP
+        vim.lsp.config['ruff'] = {
+          cmd = { 'ruff', 'server' },
+          filetypes = { 'python' },
+          root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml' },
+          capabilities = capabilities,
+        }
+        vim.lsp.enable('ruff')
+
+        -- Formatting with conform.nvim (ruff replaces black + isort)
+        local conform = require('conform')
+        conform.setup({
+          formatters_by_ft = {
+            python = { 'ruff_organize_imports', 'ruff_format' },
+            lua = { 'stylua' },
+          },
+          format_on_save = {
+            timeout_ms = 1000,
+            lsp_fallback = true,
+          },
+        })
+
+        -- Linting with nvim-lint (async, on save)
+        local lint = require('lint')
+        lint.linters_by_ft = {
+          python = { 'ruff', 'pylint' },
+        }
+        vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+          callback = function()
+            lint.try_lint()
+          end,
+        })
+
+        -- Diagnostics UI with trouble.nvim
+        require('trouble').setup({})
 
         -- LSP keymaps
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
@@ -173,6 +320,33 @@
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, {})
+        vim.keymap.set('n', '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', {})
+        vim.keymap.set('n', '<leader>xq', '<cmd>Trouble quickfix toggle<cr>', {})
+        vim.keymap.set('n', '<leader>lf', function()
+          conform.format({ async = true, lsp_fallback = true })
+        end, {})
+
+        -- General keymaps
+        vim.keymap.set('n', '<leader>w', '<cmd>update<cr>', { silent = true })
+        vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { silent = true })
+        vim.keymap.set('i', 'jk', '<esc>', { silent = true })
+        vim.keymap.set('n', '<leader>o', '<cmd>vsplit<cr>', { silent = true })
+        vim.keymap.set('n', '<leader>p', '<cmd>split<cr>', { silent = true })
+
+        -- Window navigation
+        vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true })
+        vim.keymap.set('n', '<C-l>', '<C-w>l', { silent = true })
+        vim.keymap.set('n', '<C-k>', '<C-w>k', { silent = true })
+        vim.keymap.set('n', '<C-j>', '<C-w>j', { silent = true })
+
+        -- Window resize
+        vim.keymap.set('n', '<C-Left>', '<C-w><', { silent = true })
+        vim.keymap.set('n', '<C-Right>', '<C-w>>', { silent = true })
+        vim.keymap.set('n', '<C-Up>', '<C-w>+', { silent = true })
+        vim.keymap.set('n', '<C-Down>', '<C-w>-', { silent = true })
+
+        -- Neogit
+        vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<cr>', { silent = true })
         EOF
       '';
     };
@@ -224,8 +398,6 @@
 
     # Neovim formatters
     stylua
-    isort
-    black
     ruff
 
     # Neovim linters
