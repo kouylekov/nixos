@@ -4,6 +4,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Provide /bin/bash for scripts with #!/bin/bash shebangs
+  system.activationScripts.binbash = lib.stringAfter [ "stdio" ] ''
+    ln -sfn ${pkgs.bash}/bin/bash /bin/bash
+  '';
+
   networking.networkmanager.enable = true;
   services.resolved.enable = true;
 
