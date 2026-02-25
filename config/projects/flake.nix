@@ -39,6 +39,7 @@
         pkgs.pkg-config
         pkgs.gcc
         pkgs.gnumake
+        pkgs.bash
       ];
 
       buildInputs = [
