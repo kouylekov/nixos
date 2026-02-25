@@ -365,6 +365,13 @@
   };
 
   programs.firefox.enable = true;
+
+  # Podman
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
+  };
   nixpkgs.config.allowUnfree = true;
 
   # Nix settings
