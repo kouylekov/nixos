@@ -26,6 +26,8 @@
   # Override dbus-broker forced by UWSM — it can break SDDM activation
   services.dbus.implementation = lib.mkForce "dbus";
 
+  services.gnome.gnome-keyring.enable = true;
+  services.gnome.gcr-ssh-agent.enable = false;
   services.printing.enable = true;
   services.flatpak.enable = true;
   services.fwupd.enable = true;
