@@ -62,6 +62,14 @@
         # bcrypt / general crypto
         pkgs.openssl
 
+        # CPython build deps (needed by mise when compiling Python from source)
+        pkgs.bzip2
+        pkgs.ncurses
+        pkgs.readline
+        pkgs.sqlite
+        pkgs.xz
+        pkgs.tk
+
         # general build deps
         pkgs.libffi
         pkgs.zlib
@@ -71,6 +79,14 @@
         pkgs.libsodium  # libnacl
         pkgs.file       # python-magic
         pkgs.openssl    # cryptography
+        pkgs.bzip2
+        pkgs.ncurses
+        pkgs.readline
+        pkgs.sqlite
+        pkgs.xz
+        pkgs.tk
+        pkgs.zlib
+        pkgs.libffi
       ];
 
       shellHook = ''
