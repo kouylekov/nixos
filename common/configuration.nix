@@ -385,10 +385,20 @@
     options = "--delete-older-than 14d";
   };
 
+  # Enable nix-ld for running dynamically linked executables (e.g., pre-commit hooks)
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    # Add common libraries that dynamically linked executables might need
+    stdenv.cc.cc.lib
+    zlib
+    openssl
+  ];
+
   environment.systemPackages = with pkgs; [
     sddm-astronaut
     waybar
     fuzzel
+    opencode
     alacritty
     xdg-desktop-portal-hyprland
     claude-code
