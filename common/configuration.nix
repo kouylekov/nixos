@@ -442,6 +442,7 @@
     aspellDicts.en
 
     # Dev tools
+    gh
     vault
     mise
     pre-commit
