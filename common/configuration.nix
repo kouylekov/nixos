@@ -454,6 +454,7 @@
     # Dev tools
     gh
     gnupg
+    pinentry-gnome3
     vault
     mise
     pre-commit
