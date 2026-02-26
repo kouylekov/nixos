@@ -453,6 +453,7 @@
 
     # Dev tools
     gh
+    gnupg
     vault
     mise
     pre-commit
