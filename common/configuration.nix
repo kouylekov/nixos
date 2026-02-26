@@ -460,7 +460,6 @@
     pre-commit
     openshift
     btop
-    proton-pass-cli
 
     # Communication
     pkgs-matterhorn.matterhorn
