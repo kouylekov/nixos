@@ -51,6 +51,12 @@
     lidSwitchDocked = "ignore";
   };
 
+  # direnv — auto-load .envrc when entering directories
+  home-manager.users.milen.programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true; # faster Nix integration with cached eval
+  };
+
   home-manager.users.milen.xdg.configFile = {
     # Laptop keyboard layout (no, us, bg)
     "hypr/input.conf".source =
