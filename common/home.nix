@@ -58,6 +58,7 @@
         echo " ($branch)"
       }
       PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
+      eval "$(/run/current-system/sw/bin/mise activate bash)"
     '';
   };
 

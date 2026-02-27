@@ -265,6 +265,7 @@
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
         -- Pyright: type checking, hover, go-to-definition, references
+        local venv = vim.env.VIRTUAL_ENV
         vim.lsp.config['pyright'] = {
           cmd = { 'pyright-langserver', '--stdio' },
           filetypes = { 'python' },
@@ -272,9 +273,9 @@
           capabilities = capabilities,
           settings = {
             python = {
-              pythonPath = vim.env.VIRTUAL_ENV and (vim.env.VIRTUAL_ENV .. '/bin/python') or nil,
-              venvPath = vim.env.VIRTUAL_ENV and vim.fs.dirname(vim.env.VIRTUAL_ENV) or nil,
-              venv = vim.env.VIRTUAL_ENV and vim.fs.basename(vim.env.VIRTUAL_ENV) or nil,
+              pythonPath = venv and (venv .. '/bin/python') or nil,
+              venvPath = venv and vim.fs.dirname(venv) or nil,
+              venv = venv and vim.fs.basename(venv) or nil,
               analysis = {
                 autoSearchPaths = true,
                 diagnosticMode = 'workspace',
@@ -306,7 +307,7 @@
         -- Linting with nvim-lint (async, on save)
         local lint = require('lint')
         lint.linters_by_ft = {
-          python = { 'ruff', 'pylint' },
+          python = { 'ruff' },
         }
         vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
           callback = function()
@@ -419,9 +420,6 @@
     # Neovim formatters
     stylua
     ruff
-
-    # Neovim linters
-    pylint
 
     # Neovim telescope dependencies
     ripgrep
