@@ -9,7 +9,7 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["hyprland/language", "pulseaudio", "network", "cpu", "memory", "battery", "tray"],
+    "modules-right": ["hyprland/language", "pulseaudio", "network", "cpu", "memory", "battery", "tray", "custom/power"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -105,5 +105,11 @@
     "tray": {
         "icon-size": 18,
         "spacing": 8
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": "Power Menu",
+        "on-click": "printf '  Lock\n  Suspend\n  Hibernate\n  Logout\n⏻  Shutdown\n  Reboot' | fuzzel -d -w 20 -l 6 -p 'Power: ' | xargs -I {} sh -c 'case \"{}\" in *Lock*) hyprlock;; *Suspend*) systemctl suspend;; *Hibernate*) systemctl hibernate;; *Logout*) hyprctl dispatch exit;; *Shutdown*) systemctl poweroff;; *Reboot*) systemctl reboot;; esac'"
     }
 }

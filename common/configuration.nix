@@ -457,6 +457,7 @@
     mise
     pre-commit
     openshift
+    psmisc
     btop
 
     # Communication
