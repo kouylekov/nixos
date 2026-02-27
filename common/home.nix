@@ -21,6 +21,14 @@
     "matterhorn/notify".source = link "matterhorn/notify";
   };
 
+  # Classic cursor theme
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
+
   # Dark theme
   gtk = {
     enable = true;
