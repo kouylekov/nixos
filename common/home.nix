@@ -10,6 +10,7 @@
     link = path: config.lib.file.mkOutOfStoreSymlink "/home/milen/nixos/config/${path}";
   in {
     "alacritty/alacritty.toml".source = link "alacritty/alacritty.toml";
+    "ghostty/config".source = link "ghostty/config";
     "fuzzel/fuzzel.ini".source = link "fuzzel/fuzzel.ini";
     "hypr/hyprland.conf".source = link "hypr/hyprland.conf";
     "hypr/hypridle.conf".source = link "hypr/hypridle.conf";
@@ -59,6 +60,8 @@
       }
       PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
       eval "$(/run/current-system/sw/bin/mise activate bash)"
+      
+      export PATH="/home/milen/.local/bin:$PATH"
     '';
   };
 
