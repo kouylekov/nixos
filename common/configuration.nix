@@ -464,6 +464,12 @@
     # Communication
     pkgs-matterhorn.matterhorn
     zoom-us
+
+    # Torrent
+    rtorrent
+
+    # Media
+    vlc
   ];
 
   system.stateVersion = "25.11";
