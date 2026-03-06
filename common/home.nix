@@ -65,5 +65,8 @@
     '';
   };
 
+  # Make fonts available in ~/.local/share/fonts for FHS-sandboxed apps (e.g. Horizon Client)
+  home.file.".local/share/fonts/dejavu".source = "${pkgs.dejavu_fonts}/share/fonts/truetype";
+
   programs.home-manager.enable = true;
 }

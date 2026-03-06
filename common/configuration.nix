@@ -60,6 +60,10 @@
   };
 
   fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    liberation_ttf
+    dejavu_fonts
     nerd-fonts.fira-code
     nerd-fonts.droid-sans-mono
     nerd-fonts.jetbrains-mono
@@ -470,6 +474,9 @@
 
     # Media
     vlc
+
+    # Remote desktop
+    omnissa-horizon-client
   ];
 
   system.stateVersion = "25.11";
