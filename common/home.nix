@@ -62,6 +62,7 @@
       eval "$(/run/current-system/sw/bin/mise activate bash)"
       
       export PATH="/home/milen/.local/bin:$PATH"
+      export VAULT_ADDR=https://vault.uio.no:8200
     '';
   };
 

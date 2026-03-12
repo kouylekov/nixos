@@ -450,6 +450,9 @@
     # VPN
     sshuttle
 
+    # Network tools
+    bind.dnsutils
+
     # Spell checking
     aspell
     aspellDicts.en
