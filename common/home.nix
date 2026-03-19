@@ -53,14 +53,24 @@
   programs.bash = {
     enable = true;
     initExtra = ''
+      # Disable default venv prompt
+      export VIRTUAL_ENV_DISABLE_PROMPT=1
+
       __git_branch() {
         local branch
         branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
         echo " ($branch)"
       }
-      PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
+
+      __venv_indicator() {
+        if [ -n "$VIRTUAL_ENV" ]; then
+          echo "(venv) "
+        fi
+      }
+
+      PS1='\[\e[1;32m\]$(__venv_indicator)\[\e[0m\]\[\e[1;34m\]\W\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
       eval "$(/run/current-system/sw/bin/mise activate bash)"
-      
+
       export PATH="/home/milen/.local/bin:$PATH"
       export VAULT_ADDR=https://vault.uio.no:8200
     '';

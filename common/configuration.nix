@@ -411,6 +411,7 @@
     discord
     mumble
     teams-for-linux
+    vivaldi
     fastfetch
     python3
     go
