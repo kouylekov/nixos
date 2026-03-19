@@ -450,6 +450,8 @@
 
     # VPN
     sshuttle
+    openconnect
+    networkmanager-openconnect
 
     # Network tools
     bind.dnsutils
