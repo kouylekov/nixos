@@ -1,8 +1,5 @@
 { config, pkgs, lib, pkgs-matterhorn, ... }:
 
-let
-  cisco-vpn = pkgs.callPackage ./cisco-vpn.nix {};
-in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -453,7 +450,6 @@ in
 
     # VPN
     sshuttle
-    cisco-vpn
 
     # Network tools
     bind.dnsutils
