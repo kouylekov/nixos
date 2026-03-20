@@ -411,7 +411,6 @@
     discord
     mumble
     teams-for-linux
-    vivaldi
     fastfetch
     python3
     go
@@ -451,6 +450,7 @@
     # VPN
     sshuttle
     openconnect
+    gpclient
     networkmanager-openconnect
 
     # Network tools
