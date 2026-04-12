@@ -449,6 +449,8 @@
     ranger
     xfce.thunar
     xfce.thunar-volman  # volume management plugin (auto-mount in Thunar)
+    xfce.tumbler        # thumbnail service for Thunar
+    ffmpegthumbnailer   # video thumbnail support
 
     # VPN
     sshuttle
