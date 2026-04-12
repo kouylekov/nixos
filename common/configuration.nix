@@ -29,6 +29,7 @@
   services.gnome.gnome-keyring.enable = true;
   services.gnome.gcr-ssh-agent.enable = false;
   services.printing.enable = true;
+  services.udisks2.enable = true;
   services.flatpak.enable = true;
   services.fwupd.enable = true;
 
@@ -446,6 +447,8 @@
     libnotify
     jq
     ranger
+    xfce.thunar
+    xfce.thunar-volman  # volume management plugin (auto-mount in Thunar)
 
     # VPN
     sshuttle

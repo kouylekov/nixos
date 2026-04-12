@@ -79,5 +79,13 @@
   # Make fonts available in ~/.local/share/fonts for FHS-sandboxed apps (e.g. Horizon Client)
   home.file.".local/share/fonts/dejavu".source = "${pkgs.dejavu_fonts}/share/fonts/truetype";
 
+  # Auto-mount removable media (USB drives, etc.)
+  services.udiskie = {
+    enable = true;
+    notify = true;
+    automount = true;
+    tray = "never";  # no tray icon needed on Hyprland
+  };
+
   programs.home-manager.enable = true;
 }
