@@ -16,7 +16,7 @@
   services.power-profiles-daemon.enable = true;
 
   # Eduroam — run `geteduroam` once to configure via UiO's portal
-  environment.systemPackages = [ pkgs.geteduroam ];
+  environment.systemPackages = [ pkgs.geteduroam pkgs.emacs ];
 
   # Podman
   virtualisation.podman = {
