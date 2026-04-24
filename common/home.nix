@@ -96,27 +96,10 @@
     withPython3 = true;  # Required for Python LSP features
     withRuby = false;    # Not needed
 
-    # Modern treesitter configuration
-    treesitter = {
-      enable = true;
-      grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-        bash
-        nix
-        python
-        lua
-        go
-        markdown
-        json
-        yaml
-        toml
-        gitcommit
-        gitignore
-        vimdoc
-        diff
-      ];
-    };
-
     plugins = with pkgs.vimPlugins; [
+      # Treesitter (using withAllGrammars until home-manager adds treesitter submodule)
+      nvim-treesitter.withAllGrammars
+
       # Telescope and dependencies
       telescope-nvim
       plenary-nvim
