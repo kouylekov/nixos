@@ -37,6 +37,7 @@
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
     };
+    gtk4.theme = null;  # Use new default behavior instead of config.gtk.theme
   };
 
   dconf.settings."org/gnome/desktop/interface" = {

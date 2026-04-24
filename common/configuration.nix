@@ -102,7 +102,21 @@
           friendly-snippets
 
           # Treesitter
-          nvim-treesitter.withAllGrammars
+          (nvim-treesitter.withPlugins (p: [
+            p.bash
+            p.nix
+            p.python
+            p.lua
+            p.go
+            p.markdown
+            p.json
+            p.yaml
+            p.toml
+            p.gitcommit
+            p.gitignore
+            p.vimdoc
+            p.diff
+          ]))
 
           # Formatting, linting, diagnostics
           conform-nvim
@@ -447,9 +461,9 @@
     libnotify
     jq
     ranger
-    xfce.thunar
-    xfce.thunar-volman  # volume management plugin (auto-mount in Thunar)
-    xfce.tumbler        # thumbnail service for Thunar
+    thunar
+    thunar-volman  # volume management plugin (auto-mount in Thunar)
+    tumbler        # thumbnail service for Thunar
     ffmpegthumbnailer   # video thumbnail support
 
     # VPN
