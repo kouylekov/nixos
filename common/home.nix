@@ -95,6 +95,27 @@
     vimAlias = true;
     withPython3 = true;  # Required for Python LSP features
     withRuby = false;    # Not needed
+
+    # Modern treesitter configuration
+    treesitter = {
+      enable = true;
+      grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        bash
+        nix
+        python
+        lua
+        go
+        markdown
+        json
+        yaml
+        toml
+        gitcommit
+        gitignore
+        vimdoc
+        diff
+      ];
+    };
+
     plugins = with pkgs.vimPlugins; [
       # Telescope and dependencies
       telescope-nvim
@@ -108,23 +129,6 @@
       luasnip
       cmp_luasnip
       friendly-snippets
-
-      # Treesitter
-      (nvim-treesitter.withPlugins (p: [
-        p.bash
-        p.nix
-        p.python
-        p.lua
-        p.go
-        p.markdown
-        p.json
-        p.yaml
-        p.toml
-        p.gitcommit
-        p.gitignore
-        p.vimdoc
-        p.diff
-      ]))
 
       # Formatting, linting, diagnostics
       conform-nvim
