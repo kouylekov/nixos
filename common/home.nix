@@ -93,6 +93,8 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    withPython3 = true;  # Required for Python LSP features
+    withRuby = false;    # Not needed
     plugins = with pkgs.vimPlugins; [
       # Telescope and dependencies
       telescope-nvim
@@ -143,7 +145,7 @@
       # Editing
       nvim-autopairs
     ];
-    extraLuaConfig = ''
+    initLua = ''
       -- Set leader key to space
       vim.g.mapleader = " "
       vim.g.maplocalleader = " "
