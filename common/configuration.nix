@@ -179,6 +179,7 @@
 
     # Network tools
     bind.dnsutils
+    rclone
 
     # Spell checking
     aspell
