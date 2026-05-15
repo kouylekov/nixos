@@ -72,7 +72,7 @@
       PS1='\[\e[1;32m\]$(__venv_indicator)\[\e[0m\]\[\e[1;34m\]\W\[\e[33m\]$(__git_branch)\[\e[0m\]\$ '
       eval "$(/run/current-system/sw/bin/mise activate bash)"
 
-      export PATH="/home/milen/.local/bin:$PATH"
+      export PATH="/home/milen/.local/bin:/home/milen/nixos/scripts:$PATH"
       export VAULT_ADDR=https://vault.uio.no:8200
     '';
   };

@@ -35,6 +35,7 @@
       packages = [
         python
         pkgs.pipx
+        pkgs.pip-audit
         pg_config
         pkgs.pkg-config
         pkgs.gcc
