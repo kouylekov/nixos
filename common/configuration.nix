@@ -30,7 +30,8 @@
   services.gnome.gcr-ssh-agent.enable = false;
   services.printing.enable = true;
   services.udisks2.enable = true;
-  services.flatpak.enable = true;
+  # Temporarily disabled due to meson build race condition in nixos-unstable
+  # services.flatpak.enable = true;
   services.fwupd.enable = true;
 
   # Bluetooth
