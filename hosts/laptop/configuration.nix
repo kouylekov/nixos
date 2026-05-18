@@ -56,15 +56,4 @@
     enable = true;
     nix-direnv.enable = true; # faster Nix integration with cached eval
   };
-
-  home-manager.users.milen.xdg.configFile = {
-    # Laptop keyboard layout (no, us, bg)
-    "hypr/input.conf".source =
-      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
-        "/home/milen/nixos/config/hypr/input-laptop.conf";
-    # Laptop monitors (built-in + external)
-    "hypr/monitors.conf".source =
-      config.home-manager.users.milen.lib.file.mkOutOfStoreSymlink
-        "/home/milen/nixos/config/hypr/monitors-laptop.conf";
-  };
 }
