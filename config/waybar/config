@@ -110,6 +110,6 @@
     "custom/power": {
         "format": "⏻",
         "tooltip": "Power Menu",
-        "on-click": "printf '  Lock\n  Suspend\n  Hibernate\n  Logout\n⏻  Shutdown\n  Reboot' | fuzzel -d -w 20 -l 6 -p 'Power: ' | xargs -I {} sh -c 'case \"{}\" in *Lock*) hyprlock;; *Suspend*) systemctl suspend;; *Hibernate*) systemctl hibernate;; *Logout*) hyprctl dispatch exit;; *Shutdown*) systemctl poweroff;; *Reboot*) systemctl reboot;; esac'"
+        "on-click": "printf '  Lock\n  Suspend\n  Hibernate\n  Logout\n⏻  Shutdown\n  Reboot' | fuzzel -d -w 20 -l 6 -p 'Power: ' | xargs -I {} sh -c 'case \"{}\" in *Lock*) hyprlock;; *Suspend*) systemctl suspend;; *Hibernate*) systemctl hibernate;; *Logout*) hyprctl dispatch \"hl.dsp.exit()\";; *Shutdown*) systemctl poweroff;; *Reboot*) systemctl reboot;; esac'"
     }
 }
