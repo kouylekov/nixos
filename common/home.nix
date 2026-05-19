@@ -12,9 +12,9 @@
     "alacritty/alacritty.toml".source = link "alacritty/alacritty.toml";
     "ghostty/config".source = link "ghostty/config";
     "fuzzel/fuzzel.ini".source = link "fuzzel/fuzzel.ini";
-    "hypr/hyprland.lua".source = link "hypr/hyprland.lua";
-    "hypr/hypridle.conf".source = link "hypr/hypridle.conf";
-    "hypr/hyprlock.conf".source = link "hypr/hyprlock.conf";
+    "hypr" = {
+      source = link "hypr";
+    };
     "mako/config".source = link "mako/config";
     "waybar/config".source = link "waybar/config";
     "waybar/style.css".source = link "waybar/style.css";
