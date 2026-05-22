@@ -1,0 +1,183 @@
+/* Tokyo Night inspired Ironbar theme */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Ubuntu Nerd Font", monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#bar {
+    background: rgba(26, 27, 38, 0.9);
+    border-radius: 12px;
+    border: 2px solid rgba(122, 162, 247, 0.3);
+    color: #c0caf5;
+    margin-top: 4px;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 4px;
+}
+
+/* Workspaces */
+#workspaces {
+    background: rgba(41, 46, 66, 0.8);
+    border-radius: 10px;
+    margin: 0 4px;
+    padding: 0 4px;
+}
+
+#workspaces .item {
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 8px;
+    color: #565f89;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+#workspaces .item:hover {
+    background: rgba(122, 162, 247, 0.2);
+    color: #7aa2f7;
+}
+
+#workspaces .item.focused {
+    background: #7aa2f7;
+    color: #1a1b26;
+}
+
+#workspaces .item.urgent {
+    background: #f7768e;
+    color: #1a1b26;
+}
+
+/* Window title */
+.label {
+    margin: 0 4px;
+    padding: 4px 12px;
+    background: rgba(41, 46, 66, 0.8);
+    border-radius: 10px;
+    color: #a9b1d6;
+}
+
+/* Clock */
+.clock {
+    background: #7aa2f7;
+    color: #1a1b26;
+    padding: 4px 16px;
+    margin: 0 4px;
+    border-radius: 10px;
+}
+
+/* Language indicator - targeting by position since ironbar doesn't have specific language class */
+#end .label:first-child {
+    background: rgba(158, 206, 106, 0.2);
+    color: #9ece6a;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+/* Volume */
+.volume {
+    background: rgba(125, 207, 255, 0.2);
+    color: #7dcfff;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+.volume.muted {
+    background: rgba(86, 95, 137, 0.2);
+    color: #565f89;
+}
+
+/* Network */
+.network_manager {
+    background: rgba(122, 162, 247, 0.2);
+    color: #7aa2f7;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+.network_manager.disconnected {
+    background: rgba(247, 118, 142, 0.2);
+    color: #f7768e;
+}
+
+/* CPU - using nth-child since ironbar sys_info doesn't have specific classes */
+.sys_info:nth-of-type(1) {
+    background: rgba(224, 175, 104, 0.2);
+    color: #e0af68;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+/* Memory */
+.sys_info:nth-of-type(2) {
+    background: rgba(187, 154, 247, 0.2);
+    color: #bb9af7;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+/* Battery */
+.upower {
+    background: rgba(158, 206, 106, 0.2);
+    color: #9ece6a;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+
+.upower.charging {
+    background: rgba(158, 206, 106, 0.3);
+}
+
+.upower.warning {
+    background: rgba(224, 175, 104, 0.3);
+    color: #e0af68;
+}
+
+.upower.critical {
+    background: rgba(247, 118, 142, 0.3);
+    color: #f7768e;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background: rgba(247, 118, 142, 0.6);
+    }
+}
+
+/* System tray */
+.tray {
+    background: rgba(41, 46, 66, 0.8);
+    padding: 4px 8px;
+    margin: 0 4px;
+    border-radius: 10px;
+}
+
+/* Power button */
+.power .item {
+    background: rgba(247, 118, 142, 0.2);
+    color: #f7768e;
+    padding: 4px 10px;
+    margin: 0 4px;
+    border-radius: 10px;
+}
+
+.power .item:hover {
+    background: rgba(247, 118, 142, 0.4);
+}
+
+/* Tooltips */
+tooltip {
+    background: rgba(26, 27, 38, 0.95);
+    border: 2px solid rgba(122, 162, 247, 0.3);
+    border-radius: 10px;
+    color: #c0caf5;
+    padding: 4px;
+}
