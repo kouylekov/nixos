@@ -37,6 +37,12 @@
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
     };
+    gtk3.extraConfig = {
+      gtk-enable-primary-paste = true;
+    };
+    gtk4.extraConfig = {
+      gtk-enable-primary-paste = true;
+    };
     gtk4.theme = null;  # Use new default behavior instead of config.gtk.theme
   };
 
