@@ -74,9 +74,13 @@
         # general build deps
         pkgs.libffi
         pkgs.zlib
+
+        # greenlet / async support (provides libstdc++)
+        pkgs.stdenv.cc.cc.lib
       ];
 
       env.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+        postgresql.lib  # psycopg2 / libpq
         pkgs.libsodium  # libnacl
         pkgs.file       # python-magic
         pkgs.openssl    # cryptography
@@ -88,6 +92,7 @@
         pkgs.tk
         pkgs.zlib
         pkgs.libffi
+        pkgs.stdenv.cc.cc.lib  # libstdc++ for greenlet
       ];
 
       shellHook = ''
