@@ -8,7 +8,18 @@
   outputs = { self, nixpkgs }:
   let
     system = "x86_64-linux";
-    pkgs = import nixpkgs { inherit system; };
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [
+        (final: prev: {
+          # Skip failing tests in pipx 1.8.0 - waiting for upstream fix
+          # Tests fail due to formatting changes in newer packaging library
+          pipx = prev.pipx.overridePythonAttrs (old: {
+            doCheck = false;
+          });
+        })
+      ];
+    };
     python = pkgs.python313;
     postgresql = pkgs.postgresql;
 
