@@ -34,6 +34,8 @@
     devShells.${system}.default = pkgs.mkShell {
       packages = [
         python
+        pkgs.uv
+        pkgs.migrate-to-uv
         pkgs.pipx
         pkgs.pip-audit
         pg_config
