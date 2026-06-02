@@ -1,4 +1,4 @@
-# Mako notification daemon config - Tokyo Night theme
+# Mako notification daemon config - Monochromatic theme
 
 max-visible=5
 sort=-time
@@ -6,9 +6,9 @@ layer=overlay
 anchor=top-right
 
 font=JetBrainsMono Nerd Font 11
-background-color=#1a1b26ee
-text-color=#c0caf5
-border-color=#7aa2f7
+background-color=#141414ee
+text-color=#e0e0e0
+border-color=#ffffff66
 border-size=2
 border-radius=12
 margin=8
@@ -17,13 +17,13 @@ default-timeout=5000
 ignore-timeout=0
 
 [urgency=low]
-border-color=#565f89
+border-color=#808080
 default-timeout=3000
 
 [urgency=normal]
-border-color=#7aa2f7
+border-color=#c0c0c0
 default-timeout=5000
 
 [urgency=critical]
-border-color=#f7768e
+border-color=#ffffff
 default-timeout=0

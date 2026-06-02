@@ -9,7 +9,7 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["hyprland/language", "pulseaudio", "network", "cpu", "memory", "battery", "tray", "custom/power"],
+    "modules-right": ["hyprland/language", "pulseaudio", "cpu", "memory", "battery", "tray", "custom/power"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -61,13 +61,13 @@
     },
 
     "cpu": {
-        "format": " {usage}%",
+        "format": "󰻠 {usage}%",
         "tooltip": true,
         "interval": 2
     },
 
     "memory": {
-        "format": " {}%",
+        "format": "󰍛 {}%",
         "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB"
     },
 
@@ -94,9 +94,9 @@
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-bluetooth": " {volume}%",
-        "format-muted": "",
+        "format-muted": "󰖁",
         "format-icons": {
-            "default": ["", "", ""]
+            "default": ["󰕿", "󰖀", "󰕾"]
         },
         "on-click": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"

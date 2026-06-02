@@ -1,16 +1,16 @@
-/* Tokyo Night inspired Waybar theme */
+/* Modern Monochromatic Waybar theme */
 
 * {
     font-family: "JetBrainsMono Nerd Font", "Ubuntu Nerd Font", monospace;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 window#waybar {
-    background: rgba(26, 27, 38, 0.9);
+    background: rgba(20, 20, 20, 0.85);
     border-radius: 12px;
-    border: 2px solid rgba(122, 162, 247, 0.3);
-    color: #c0caf5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
 }
 
 window#waybar.hidden {
@@ -18,7 +18,7 @@ window#waybar.hidden {
 }
 
 #workspaces {
-    background: rgba(41, 46, 66, 0.8);
+    background: rgba(40, 40, 40, 0.6);
     border-radius: 10px;
     margin: 4px;
     padding: 0 4px;
@@ -28,33 +28,33 @@ window#waybar.hidden {
     padding: 4px 8px;
     margin: 2px;
     border-radius: 8px;
-    color: #565f89;
+    color: #808080;
     background: transparent;
     border: none;
     transition: all 0.2s ease;
 }
 
 #workspaces button:hover {
-    background: rgba(122, 162, 247, 0.2);
-    color: #7aa2f7;
+    background: rgba(255, 255, 255, 0.1);
+    color: #c0c0c0;
 }
 
 #workspaces button.active {
-    background: #7aa2f7;
-    color: #1a1b26;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1a1a1a;
 }
 
 #workspaces button.urgent {
-    background: #f7768e;
-    color: #1a1b26;
+    background: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
 }
 
 #window {
     margin: 4px;
     padding: 4px 12px;
-    background: rgba(41, 46, 66, 0.8);
+    background: rgba(40, 40, 40, 0.6);
     border-radius: 10px;
-    color: #a9b1d6;
+    color: #b0b0b0;
 }
 
 #window.empty {
@@ -62,95 +62,95 @@ window#waybar.hidden {
 }
 
 #clock {
-    background: #7aa2f7;
-    color: #1a1b26;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
     padding: 4px 16px;
     margin: 4px;
     border-radius: 10px;
 }
 
 #language {
-    background: rgba(158, 206, 106, 0.2);
-    color: #9ece6a;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #cpu {
-    background: rgba(224, 175, 104, 0.2);
-    color: #e0af68;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #memory {
-    background: rgba(187, 154, 247, 0.2);
-    color: #bb9af7;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #battery {
-    background: rgba(158, 206, 106, 0.2);
-    color: #9ece6a;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #battery.charging {
-    background: rgba(158, 206, 106, 0.3);
-    color: #9ece6a;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
 }
 
 #battery.warning:not(.charging) {
-    background: rgba(224, 175, 104, 0.3);
-    color: #e0af68;
+    background: rgba(255, 255, 255, 0.15);
+    color: #e0e0e0;
 }
 
 #battery.critical:not(.charging) {
-    background: rgba(247, 118, 142, 0.3);
-    color: #f7768e;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
     animation: blink 0.5s linear infinite alternate;
 }
 
 @keyframes blink {
     to {
-        background: rgba(247, 118, 142, 0.6);
+        background: rgba(255, 255, 255, 0.35);
     }
 }
 
 #network {
-    background: rgba(122, 162, 247, 0.2);
-    color: #7aa2f7;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #network.disconnected {
-    background: rgba(247, 118, 142, 0.2);
-    color: #f7768e;
+    background: rgba(255, 255, 255, 0.05);
+    color: #808080;
 }
 
 #pulseaudio {
-    background: rgba(125, 207, 255, 0.2);
-    color: #7dcfff;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0d0;
     padding: 4px 10px;
     margin: 4px 2px;
     border-radius: 10px;
 }
 
 #pulseaudio.muted {
-    background: rgba(86, 95, 137, 0.2);
-    color: #565f89;
+    background: rgba(255, 255, 255, 0.05);
+    color: #808080;
 }
 
 #tray {
-    background: rgba(41, 46, 66, 0.8);
+    background: rgba(40, 40, 40, 0.6);
     padding: 4px 8px;
     margin: 4px;
     border-radius: 10px;
@@ -162,28 +162,29 @@ window#waybar.hidden {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background: rgba(247, 118, 142, 0.2);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 #custom-power {
-    background: rgba(247, 118, 142, 0.2);
-    color: #f7768e;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
     padding: 4px 10px;
     margin: 4px;
     border-radius: 10px;
 }
 
 #custom-power:hover {
-    background: rgba(247, 118, 142, 0.4);
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
 }
 
 tooltip {
-    background: rgba(26, 27, 38, 0.95);
-    border: 2px solid rgba(122, 162, 247, 0.3);
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
 }
 
 tooltip label {
-    color: #c0caf5;
+    color: #e0e0e0;
     padding: 4px;
 }

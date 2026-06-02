@@ -18,25 +18,25 @@ opacity = 0.95
 padding = { x = 8, y = 8 }
 
 [colors.primary]
-background = "#1a1b26"
-foreground = "#c0caf5"
+background = "#141414"
+foreground = "#e0e0e0"
 
 [colors.normal]
-black = "#15161e"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
-blue = "#7aa2f7"
-magenta = "#bb9af7"
-cyan = "#7dcfff"
-white = "#a9b1d6"
+black = "#1a1a1a"
+red = "#8a8a8a"
+green = "#9a9a9a"
+yellow = "#a8a8a8"
+blue = "#b0b0b0"
+magenta = "#bebebe"
+cyan = "#c8c8c8"
+white = "#d0d0d0"
 
 [colors.bright]
-black = "#414868"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
-blue = "#7aa2f7"
-magenta = "#bb9af7"
-cyan = "#7dcfff"
-white = "#c0caf5"
+black = "#404040"
+red = "#9a9a9a"
+green = "#ababab"
+yellow = "#b8b8b8"
+blue = "#c0c0c0"
+magenta = "#cacaca"
+cyan = "#d8d8d8"
+white = "#e8e8e8"
