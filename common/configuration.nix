@@ -61,25 +61,40 @@
     users.milen = import ./home.nix;
   };
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    liberation_ttf
-    dejavu_fonts
-    nerd-fonts.fira-code
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.adwaita-mono
-    nerd-fonts.bitstream-vera-sans-mono
-    nerd-fonts.code-new-roman
-    nerd-fonts.noto
-    nerd-fonts.symbols-only
-    nerd-fonts.terminess-ttf
-    nerd-fonts.ubuntu
-    nerd-fonts.ubuntu-mono
-    nerd-fonts.ubuntu-sans
-    nerd-fonts.sauce-code-pro
-  ];
+  fonts = {
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      liberation_ttf
+      dejavu_fonts
+      nerd-fonts.fira-code
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.adwaita-mono
+      nerd-fonts.bitstream-vera-sans-mono
+      nerd-fonts.code-new-roman
+      nerd-fonts.noto
+      nerd-fonts.symbols-only
+      nerd-fonts.terminess-ttf
+      nerd-fonts.ubuntu
+      nerd-fonts.ubuntu-mono
+      nerd-fonts.ubuntu-sans
+      nerd-fonts.sauce-code-pro
+    ];
+
+    fontconfig = {
+      enable = true;
+      antialias = true;
+      hinting = {
+        enable = true;
+        style = "slight";  # Options: none, slight, medium, full
+      };
+      subpixel = {
+        rgba = "rgb";  # Options: rgb, bgr, vrgb, vbgr, none
+        lcdfilter = "default";  # Options: default, light, legacy, none
+      };
+    };
+  };
 
   programs.dconf.enable = true;
   programs.git.enable = true;
@@ -126,7 +141,9 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    sddm-astronaut
+    # Display manager theme
+    libsForQt5.qt5.qtgraphicaleffects
+
     waybar
     fuzzel
     opencode

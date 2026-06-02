@@ -30,20 +30,26 @@
     gtk.enable = true;
   };
 
-  # Dark theme
+  # Monochromatic dark theme matching Hyprland/Waybar/Ghostty
   gtk = {
     enable = true;
     theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
+      name = "Graphite-Dark";
+      package = pkgs.graphite-gtk-theme;
+    };
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
     };
     gtk3.extraConfig = {
       gtk-enable-primary-paste = true;
     };
-    gtk4.extraConfig = {
-      gtk-enable-primary-paste = true;
+    gtk4 = {
+      theme = config.gtk.theme;  # Explicitly use same theme as GTK3
+      extraConfig = {
+        gtk-enable-primary-paste = true;
+      };
     };
-    gtk4.theme = null;  # Use new default behavior instead of config.gtk.theme
   };
 
   dconf.settings."org/gnome/desktop/interface" = {
@@ -85,6 +91,8 @@
 
   # Make fonts available in ~/.local/share/fonts for FHS-sandboxed apps (e.g. Horizon Client)
   home.file.".local/share/fonts/dejavu".source = "${pkgs.dejavu_fonts}/share/fonts/truetype";
+  home.file.".local/share/fonts/noto".source = "${pkgs.noto-fonts}/share/fonts/noto";
+  home.file.".local/share/fonts/liberation".source = "${pkgs.liberation_ttf}/share/fonts/truetype";
 
   # Auto-mount removable media (USB drives, etc.)
   services.udiskie = {
