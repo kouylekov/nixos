@@ -142,6 +142,7 @@
 
   environment.systemPackages = with pkgs; [
     # Display manager theme
+    sddm-astronaut
     libsForQt5.qt5.qtgraphicaleffects
 
     waybar
