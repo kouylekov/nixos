@@ -47,6 +47,7 @@
         python
         pkgs.uv
         pkgs.migrate-to-uv
+        pkgs.poetry
         pkgs.pipx
         pkgs.pip-audit
         pg_config
@@ -109,13 +110,6 @@
       ];
 
       shellHook = ''
-        export PIPX_HOME="$HOME/.local/pipx"
-        export PIPX_BIN_DIR="$HOME/.local/bin"
-        export PATH="$PIPX_BIN_DIR:$PATH"
-        if ! command -v poetry &>/dev/null; then
-          echo "Installing Poetry via pipx..."
-          pipx install poetry
-        fi
         echo "Python dev shell ready — $(python --version), $(poetry --version)"
       '';
     };

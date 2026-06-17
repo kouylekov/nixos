@@ -143,7 +143,7 @@
   environment.systemPackages = with pkgs; [
     # Display manager theme
     sddm-astronaut
-    libsForQt5.qt5.qtgraphicaleffects
+    qt5.qtgraphicaleffects
 
     waybar
     fuzzel
@@ -204,6 +204,7 @@
     # Network tools
     bind.dnsutils
     rclone
+    elinks
 
     # Spell checking
     aspell
@@ -232,6 +233,9 @@
 
     # Remote desktop
     omnissa-horizon-client
+
+    # Password manager
+    keepassxc
   ];
 
   system.stateVersion = "25.11";
