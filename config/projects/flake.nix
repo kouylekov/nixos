@@ -41,13 +41,15 @@
         *)               echo "${postgresql.dev}/include";;
       esac
     '';
+    # Poetry (plugins removed - poetry-dynamic-versioning not available in this nixpkgs)
+    poetryWithPlugins = pkgs.poetry;
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = [
         python
         pkgs.uv
         pkgs.migrate-to-uv
-        pkgs.poetry
+        poetryWithPlugins
         pkgs.pipx
         pkgs.pip-audit
         pg_config
