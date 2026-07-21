@@ -117,11 +117,7 @@
     defaultNetwork.settings.dns_enabled = true;
   };
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    (final: prev: {
-      openldap = prev.openldap.overrideAttrs (_: { doCheck = false; });
-    })
-  ];
+  nixpkgs.overlays = [ ];
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -209,6 +205,14 @@
     # Spell checking
     aspell
     aspellDicts.en
+    aspellDicts.nb
+    aspellDicts.bg
+
+    # Office suite
+    libreoffice-qt6-fresh
+    hunspell
+    hunspellDicts.en_US
+    hunspellDicts.nb_NO
 
     # Dev tools
     gh
