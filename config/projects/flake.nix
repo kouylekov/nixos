@@ -41,8 +41,13 @@
         *)               echo "${postgresql.dev}/include";;
       esac
     '';
-    # Poetry (plugins removed - poetry-dynamic-versioning not available in this nixpkgs)
-    poetryWithPlugins = pkgs.poetry;
+    # Poetry with poetry-dynamic-versioning so `poetry install` can satisfy the
+    # project's [tool.poetry.requires-plugins] without writing to the read-only
+    # Nix store. The plugin comes from python3Packages (same interpreter poetry
+    # is built against) since it isn't in poetry's curated `plugins` set.
+    poetryWithPlugins = pkgs.poetry.withPlugins (_ps: [
+      pkgs.python3Packages.poetry-dynamic-versioning
+    ]);
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = [
