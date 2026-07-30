@@ -176,6 +176,7 @@
     mako
     grim
     slurp
+    wf-recorder
     wl-clipboard
     cliphist
     brightnessctl
