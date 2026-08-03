@@ -117,6 +117,12 @@
       ];
 
       shellHook = ''
+        # Don't leak Nix's global PYTHONPATH (python3.13 site-packages, poetry,
+        # pipx, urllib3, ...) into independent venvs like pre-commit's isolated
+        # python3.14 hook environments. The packaged tools are self-contained
+        # wrapped binaries, so setting this leaks mismatched modules and breaks
+        # them (e.g. poetry's requests-toolbelt / poetry-core under py3.14).
+        unset PYTHONPATH
         echo "Python dev shell ready — $(python --version), $(poetry --version)"
       '';
     };

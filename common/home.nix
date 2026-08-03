@@ -35,8 +35,11 @@
   gtk = {
     enable = true;
     theme = {
-      name = "Graphite-Dark";
-      package = pkgs.graphite-gtk-theme;
+      name = "Colloid-Grey-Dark";
+      package = pkgs.colloid-gtk-theme.override {
+        themeVariants = [ "grey" ];
+        colorVariants = [ "dark" ];
+      };
     };
     iconTheme = {
       name = "Adwaita";
@@ -169,6 +172,18 @@
       o.spell = true
       o.spelllang = 'en_us'
       vim.diagnostic.config({ virtual_text = true })
+
+      -- Spelling: make errors stand out clearly (undercurl + tinted background)
+      -- instead of the subtle default. Applied on startup and on every colorscheme
+      -- switch so the theme can't wipe our colors.
+      local function setup_spell_hl()
+        vim.api.nvim_set_hl(0, 'SpellBad',   { undercurl = true, special = '#ff7b72', bg = '#ff0000', blend = 15 })
+        vim.api.nvim_set_hl(0, 'SpellCap',   { undercurl = true, special = '#ffa657', bg = '#ffa500', blend = 15 })
+        vim.api.nvim_set_hl(0, 'SpellRare',  { undercurl = true, special = '#e3b341', bg = '#ffff00', blend = 15 })
+        vim.api.nvim_set_hl(0, 'SpellLocal', { undercurl = true, special = '#79c0ff', bg = '#00bdff', blend = 15 })
+      end
+      setup_spell_hl()
+      vim.api.nvim_create_autocmd('ColorScheme', { callback = setup_spell_hl })
 
       -- Code folding with treesitter
       o.foldmethod = 'expr'
@@ -363,6 +378,49 @@
       vim.keymap.set('i', 'jk', '<esc>', { silent = true })
       vim.keymap.set('n', '<leader>o', '<cmd>vsplit<cr>', { silent = true })
       vim.keymap.set('n', '<leader>p', '<cmd>split<cr>', { silent = true })
+
+      -- Spelling: <leader>s -- show alternatives for the mis-spelled word under
+      -- (or after) the cursor and replace it with the selected choice.
+      local function correct_spelling()
+        local word = vim.fn.spellbadword()
+        local bad = word[1] or ""
+        if bad == "" then
+          vim.notify('No spelling error under cursor', vim.log.levels.INFO)
+          return
+        end
+        local lnum = vim.api.nvim_win_get_cursor(0)[1]
+        local esc = vim.fn.escape(bad, '\\/.*$^~[]')
+        local start = vim.fn.searchpos('\\<\\C' .. esc .. '\\>', 'cW', lnum)[2]
+        if start == 0 then
+          vim.notify('Could not locate the spelling error', vim.log.levels.WARN)
+          return
+        end
+        local suggestions = vim.fn.spellsuggest(bad, 9)
+        if #suggestions == 0 then
+          vim.notify('No suggestions for "' .. bad .. '"', vim.log.levels.INFO)
+          return
+        end
+        -- Simple command-line numeric picker (no floating window = no lock).
+        local labels = {}
+        for i, w in ipairs(suggestions) do labels[i] = i .. ') ' .. w end
+        local answer = vim.fn.input(table.concat(labels, '   ') .. '  [' .. bad .. ']: ')
+        if answer == "" then
+          return
+        end
+        local idx = tonumber(answer:match('%d+'))
+        local choice = idx and suggestions[idx]
+        if choice and choice ~= bad then
+          local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
+          local new = line:sub(1, start - 1) .. choice .. line:sub(start + #bad)
+          vim.api.nvim_buf_set_lines(0, lnum - 1, lnum, false, { new })
+        else
+          vim.notify('Cancelled', vim.log.levels.INFO)
+        end
+      end
+      vim.keymap.set('n', '<leader>s', correct_spelling, { desc = 'Correct spelling' })
+
+      -- Also keep the native Vim suggestion popup reachable via <leader>z
+      vim.keymap.set('n', '<leader>z', 'z=', { desc = 'Spelling suggestions (native)' })
 
       -- Window navigation
       vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true })
