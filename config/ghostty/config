@@ -9,32 +9,32 @@ window-padding-y = 8
 background-opacity = 0.95
 background-blur-radius = 20
 
-# Grayscale color scheme (matching waybar theme)
+# Color scheme (Nord-inspired, on dark background)
 background = 141414
-foreground = e0e0e0
+foreground = e5e9f0
 
 # Cursor
-cursor-color = ffffff
+cursor-color = 88c0d0
 cursor-style = block
 cursor-style-blink = false
 
-# Grayscale palette
-palette = 0=#1a1a1a
-palette = 1=#8a8a8a
-palette = 2=#9a9a9a
-palette = 3=#a8a8a8
-palette = 4=#b0b0b0
-palette = 5=#bebebe
-palette = 6=#c8c8c8
-palette = 7=#d0d0d0
-palette = 8=#404040
-palette = 9=#9a9a9a
-palette = 10=#ababab
-palette = 11=#b8b8b8
-palette = 12=#c0c0c0
-palette = 13=#cacaca
-palette = 14=#d8d8d8
-palette = 15=#e8e8e8
+# Nord palette
+palette = 0=#3b4252
+palette = 1=#bf616a
+palette = 2=#a3be8c
+palette = 3=#ebcb8b
+palette = 4=#81a1c1
+palette = 5=#b48ead
+palette = 6=#88c0d0
+palette = 7=#e5e9f0
+palette = 8=#4c566a
+palette = 9=#bf616a
+palette = 10=#a3be8c
+palette = 11=#ebcb8b
+palette = 12=#81a1c1
+palette = 13=#b48ead
+palette = 14=#8fbcbb
+palette = 15=#eceff4
 
 # Shell integration
 shell-integration = bash
