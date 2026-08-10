@@ -127,7 +127,7 @@ hl.bind(mainMod .. " + T",      hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + escape", hl.dsp.exec_cmd("hyprlock"))
 
 -- Pass Manager
-hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("/home/milen/projects/pass-cli-dmenu/./pass-cli-dmenu"))
+hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("/home/milen/projects/pass-cli-dmenu/pass-cli-dmenu"))
 
 -- Clipboard history
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("cliphist list | fuzzel -d | cliphist decode | wl-copy"))
