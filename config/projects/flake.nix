@@ -17,6 +17,19 @@
           pipx = prev.pipx.overridePythonAttrs (old: {
             doCheck = false;
           });
+          # pip-api (a pip-audit dependency) resolves the pip version by
+          # spawning `sys.executable -m pip --version`. sys.executable is the
+          # bare interpreter in the store, which can't import pip (pip lives in
+          # its own output). Wrap pip-audit so pip's site-packages is on
+          # PYTHONPATH for this subprocess, without leaking PYTHONPATH into the
+          # rest of the dev shell.
+          pip-audit = let
+            real = prev.pip-audit;
+            pipSitePackage = "${prev.python313.pkgs.pip}/${prev.python313.sitePackages}";
+          in prev.writeShellScriptBin "pip-audit" ''
+            export PYTHONPATH="${pipSitePackage}''${PYTHONPATH:+:$PYTHONPATH}"
+            exec "${real}/bin/pip-audit" "$@"
+          '';
         })
       ];
     };
@@ -102,6 +115,7 @@
 
       env.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
         postgresql.lib  # psycopg2 / libpq
+        pkgs.krb5       # kerberos (libgssapi_krb5, libkrb5)
         pkgs.libsodium  # libnacl
         pkgs.file       # python-magic
         pkgs.openssl    # cryptography
