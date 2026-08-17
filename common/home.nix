@@ -344,8 +344,12 @@
         filetypes = { 'python' },
         root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml' },
         capabilities = capabilities,
-        settings = {
-          lint = { ignore = { 'I' } },
+        -- ruff server reads config from initializationOptions, NOT from
+        -- `settings` -- a plain `settings = {...}` block is silently ignored.
+        init_options = {
+          settings = {
+            lint = { ignore = { 'I' } },
+          },
         },
       }
       vim.lsp.enable('ruff')
@@ -364,6 +368,9 @@
       lint.linters_by_ft = {
         python = { 'ruff' },
       }
+      -- Match the ruff LSP: skip isort (I) rules, conform handles formatting.
+      -- Insert before the trailing '-' (the stdin marker) so it stays last.
+      table.insert(lint.linters.ruff.args, #lint.linters.ruff.args, '--ignore=I')
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
           lint.try_lint()
