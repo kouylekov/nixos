@@ -115,8 +115,18 @@
     withRuby = false;    # Not needed
 
     plugins = with pkgs.vimPlugins; [
-      # Treesitter (using withAllGrammars until home-manager adds treesitter submodule)
-      nvim-treesitter.withAllGrammars
+      # Treesitter (restricted to supported grammars)
+      (nvim-treesitter.withPlugins (p: [
+        p.python
+        p.bash
+        p.go
+        p.csv
+        p.tsv
+        p.html
+        p.javascript
+        p.typescript
+        p.perl
+      ]))
 
       # Telescope and dependencies
       telescope-nvim
@@ -334,6 +344,9 @@
         filetypes = { 'python' },
         root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml' },
         capabilities = capabilities,
+        settings = {
+          lint = { ignore = { 'I' } },
+        },
       }
       vim.lsp.enable('ruff')
 

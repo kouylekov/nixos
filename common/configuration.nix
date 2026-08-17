@@ -117,12 +117,6 @@
     defaultNetwork.settings.dns_enabled = true;
   };
   nixpkgs.config.allowUnfree = true;
-  # wf-recorder 0.6.0 fails to build against FFmpeg 8.x (removed AVCodec.sample_fmts)
-  nixpkgs.overlays = [
-    (final: prev: {
-      wf-recorder = prev.wf-recorder.override { ffmpeg = prev.ffmpeg_6; };
-    })
-  ];
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
