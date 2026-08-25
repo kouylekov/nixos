@@ -147,7 +147,11 @@
     xdg-desktop-portal-hyprland
     claude-code
     discord
-    mumble
+    # Mumble's native PipeWire backend spins in its SCHED_RR data-loop thread,
+    # blowing the 200ms RLIMIT_RTTIME rtkit grants it, so the kernel SIGKILLs
+    # the process a few seconds after startup. Drop it and use PulseAudio
+    # (served by pipewire-pulse) instead.
+    (mumble.override { pipewireSupport = false; })
     teams-for-linux
     fastfetch
     python3
