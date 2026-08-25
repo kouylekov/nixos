@@ -10,7 +10,6 @@
     link = path: config.lib.file.mkOutOfStoreSymlink "/home/milen/nixos/config/${path}";
   in {
     "alacritty/alacritty.toml".source = link "alacritty/alacritty.toml";
-    "ghostty/config".source = link "ghostty/config";
     "fuzzel/fuzzel.ini".source = link "fuzzel/fuzzel.ini";
     "hypr" = {
       source = link "hypr";

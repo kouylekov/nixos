@@ -144,7 +144,6 @@
     fuzzel
     opencode
     alacritty
-    ghostty
     xdg-desktop-portal-hyprland
     claude-code
     discord

@@ -25,7 +25,7 @@ require("monitors-" .. host)
 --- MY PROGRAMS  ---
 ---------------------
 
-local terminal    = "ghostty"
+local terminal    = "alacritty"
 local fileManager = "nautilus"
 local menu        = "fuzzel"
 local browser     = "firefox"

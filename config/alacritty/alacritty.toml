@@ -1,5 +1,6 @@
+# Font configuration
 [font]
-size = 14.0
+size = 15.0
 
 [font.normal]
 family = "JetBrainsMono Nerd Font"
@@ -13,30 +14,62 @@ style = "Bold"
 family = "JetBrainsMono Nerd Font"
 style = "Italic"
 
+[font.offset]
+x = 0
+y = 2
+
+[font.glyph_offset]
+x = 0
+y = 1
+
+# Window appearance
 [window]
 opacity = 0.95
+blur = true
 padding = { x = 8, y = 8 }
+decorations_theme_variant = "Dark"
 
+# Color scheme (Nord-inspired, on dark background)
 [colors.primary]
 background = "#141414"
-foreground = "#e0e0e0"
+foreground = "#e5e9f0"
 
+[colors.cursor]
+cursor = "#88c0d0"
+text = "#141414"
+
+# Nord palette
 [colors.normal]
-black = "#1a1a1a"
-red = "#8a8a8a"
-green = "#9a9a9a"
-yellow = "#a8a8a8"
-blue = "#b0b0b0"
-magenta = "#bebebe"
-cyan = "#c8c8c8"
-white = "#d0d0d0"
+black = "#3b4252"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#88c0d0"
+white = "#e5e9f0"
 
 [colors.bright]
-black = "#404040"
-red = "#9a9a9a"
-green = "#ababab"
-yellow = "#b8b8b8"
-blue = "#c0c0c0"
-magenta = "#cacaca"
-cyan = "#d8d8d8"
-white = "#e8e8e8"
+black = "#4c566a"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#8fbcbb"
+white = "#eceff4"
+
+# Cursor
+[cursor]
+style = { shape = "Block", blinking = "Off" }
+
+# Mouse behavior
+[mouse]
+hide_when_typing = true
+
+# copy-on-select
+[selection]
+save_to_clipboard = true
+
+[terminal]
+osc52 = "CopyPaste"
