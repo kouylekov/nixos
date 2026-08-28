@@ -230,6 +230,8 @@
 
     # Communication
     pkgs-matterhorn.matterhorn
+    xclip  # matterhorn yanks via Hclip, which only knows xclip/xsel (bridged to
+           # the Wayland clipboard by Hyprland's XWayland integration)
     zoom-us
 
     # Torrent

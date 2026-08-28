@@ -75,6 +75,8 @@
         pkgs.gcc
         pkgs.gnumake
         postgresql
+        # Node.js provides `npx`, used to run the Redocly CLI for API docs
+        pkgs.nodejs
       ];
 
       buildInputs = [
@@ -137,12 +139,6 @@
         # wrapped binaries, so setting this leaks mismatched modules and breaks
         # them (e.g. poetry's requests-toolbelt / poetry-core under py3.14).
         unset PYTHONPATH
-        # If this is a Poetry project, make the Poetry virtualenv's interpreter
-        # the active `python` instead of the bare system one from the Nix store.
-        if [ -f pyproject.toml ] && command -v poetry >/dev/null 2>&1 && poetry env info --path >/dev/null 2>&1; then
-          # shellcheck disable=SC1090
-          source "$(poetry env info --path)/bin/activate"
-        fi
         echo "Python dev shell ready — $(python --version), $(poetry --version)"
       '';
     };
