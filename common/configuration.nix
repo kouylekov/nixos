@@ -212,7 +212,7 @@
     aspellDicts.bg
 
     # Office suite
-    libreoffice-qt6-fresh
+        libreoffice-qt-stable
     hunspell
     hunspellDicts.en_US
     hunspellDicts.nb_NO
