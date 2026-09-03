@@ -25,7 +25,7 @@
           # rest of the dev shell.
           pip-audit = let
             real = prev.pip-audit;
-            pipSitePackage = "${prev.python313.pkgs.pip}/${prev.python313.sitePackages}";
+            pipSitePackage = "${prev.python314.pkgs.pip}/${prev.python314.sitePackages}";
           in prev.writeShellScriptBin "pip-audit" ''
             export PYTHONPATH="${pipSitePackage}''${PYTHONPATH:+:$PYTHONPATH}"
             exec "${real}/bin/pip-audit" "$@"
@@ -33,7 +33,7 @@
         })
       ];
     };
-    python = pkgs.python313;
+    python = pkgs.python314;
     postgresql = pkgs.postgresql;
 
     # psycopg2 needs pg_config which nixpkgs no longer ships as a binary
@@ -133,13 +133,6 @@
       ];
 
       shellHook = ''
-        # Don't leak Nix's global PYTHONPATH (python3.13 site-packages, poetry,
-        # pipx, urllib3, ...) into independent venvs like pre-commit's isolated
-        # python3.14 hook environments. The packaged tools are self-contained
-        # wrapped binaries, so setting this leaks mismatched modules and breaks
-        # them (e.g. poetry's requests-toolbelt / poetry-core under py3.14).
-        unset PYTHONPATH
-        echo "Python dev shell ready — $(python --version), $(poetry --version)"
       '';
     };
   };
