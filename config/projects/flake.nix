@@ -133,6 +133,12 @@
       ];
 
       shellHook = ''
+        # nixpkgs' python setup-hook leaks every python package's site-packages
+        # onto PYTHONPATH (poetry, pipx, migrate-to-uv, ...). Those binaries are
+        # already wrapped with their own PYTHONPATH, so this only contaminates
+        # child processes (e.g. pre-commit's isolated venvs) with a system poetry
+        # that is incompatible with their resolved dulwich. Drop it.
+        unset PYTHONPATH
       '';
     };
   };
