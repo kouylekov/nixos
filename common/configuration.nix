@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-matterhorn, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, mumble-fork, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -151,7 +151,10 @@
     # blowing the 200ms RLIMIT_RTTIME rtkit grants it, so the kernel SIGKILLs
     # the process a few seconds after startup. Drop it and use PulseAudio
     # (served by pipewire-pulse) instead.
-    (mumble.override { pipewireSupport = false; })
+    #(mumble.override { pipewireSupport = false; })
+    mumble-fork.packages.${pkgs.system}.mumble
+
+
     teams-for-linux
     fastfetch
     python3

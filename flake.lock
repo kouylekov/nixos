@@ -1,5 +1,56 @@
 {
   "nodes": {
+    "cli11-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740659131,
+        "narHash": "sha256-73dfpZDnKl0cADM4LTP3/eDFhwCdiHbEaGRF7ZyWsdQ=",
+        "owner": "CLIUtils",
+        "repo": "CLI11",
+        "rev": "4160d259d961cd393fd8d67590a8c7d210207348",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CLIUtils",
+        "repo": "CLI11",
+        "rev": "4160d259d961cd393fd8d67590a8c7d210207348",
+        "type": "github"
+      }
+    },
+    "cmake-compiler-flags": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1674129037,
+        "narHash": "sha256-Mgn3In3tZuxG0oKH35TaHR/Hrx2lwviheFLZwKzHjww=",
+        "owner": "Krzmbrzl",
+        "repo": "cmake-compiler-flags",
+        "rev": "c0e8552d47be4270a1c31b0be693c43faff51537",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Krzmbrzl",
+        "repo": "cmake-compiler-flags",
+        "rev": "c0e8552d47be4270a1c31b0be693c43faff51537",
+        "type": "github"
+      }
+    },
+    "flag-icons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713888881,
+        "narHash": "sha256-20JL+mwPD3/gf24HOP2z/t/VkoqtgWpfxgYB/XWfYRI=",
+        "owner": "lipis",
+        "repo": "flag-icons",
+        "rev": "38dbe5f294c9692804d3516d617b3dd991c17ecc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lipis",
+        "repo": "flag-icons",
+        "rev": "38dbe5f294c9692804d3516d617b3dd991c17ecc",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -20,13 +71,58 @@
         "type": "github"
       }
     },
+    "minhook": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754854360,
+        "narHash": "sha256-vMHB2+EEUEMzfaV/HaKBCXmgMkAW7MaG8X94yuT0c/E=",
+        "owner": "mumble-voip",
+        "repo": "minhook",
+        "rev": "8b972409bd85f851b280f5334c16aecb7f131e76",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mumble-voip",
+        "repo": "minhook",
+        "rev": "8b972409bd85f851b280f5334c16aecb7f131e76",
+        "type": "github"
+      }
+    },
+    "mumble-fork": {
+      "inputs": {
+        "cli11-src": "cli11-src",
+        "cmake-compiler-flags": "cmake-compiler-flags",
+        "flag-icons": "flag-icons",
+        "minhook": "minhook",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "speexdsp-src": "speexdsp-src",
+        "tracy": "tracy",
+        "utfcpp": "utfcpp"
+      },
+      "locked": {
+        "lastModified": 1788711841,
+        "narHash": "sha256-aPvFsuh0vj/rOjeRQKc9NLqR0r3qBUYzxyc6PaYuS14=",
+        "ref": "nix-flake",
+        "rev": "4c0e65d75438439622a0b1314886aa5db0426d71",
+        "revCount": 11963,
+        "type": "git",
+        "url": "https://code.t-juice.club/torjus/mumble.git"
+      },
+      "original": {
+        "ref": "nix-flake",
+        "type": "git",
+        "url": "https://code.t-juice.club/torjus/mumble.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1788614874,
-        "narHash": "sha256-7QYjT2vHLuX9Z1pdxHXDKCbh1CR3D/2rywB9Tx0MPRg=",
+        "lastModified": 1788752844,
+        "narHash": "sha256-VaWGJ6+cIYN2erfSecbRV+4ljI185Ty2wUrXyvQbgOw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c043004d1c6985732bcc1cbc5a9c9aecbbb4e0f0",
+        "rev": "dc5d91f840324650bac8c379428c7037a416959a",
         "type": "github"
       },
       "original": {
@@ -55,8 +151,60 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "mumble-fork": "mumble-fork",
         "nixpkgs": "nixpkgs",
         "nixpkgs-matterhorn": "nixpkgs-matterhorn"
+      }
+    },
+    "speexdsp-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677619559,
+        "narHash": "sha256-99ZQ5cGxf4MgNq7PhPgqnJn1NZX3jr7C7t5TO1EwqMU=",
+        "owner": "xiph",
+        "repo": "speexdsp",
+        "rev": "738e17905e1ca2a1fa932ddd9c2a85d089f4e845",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xiph",
+        "repo": "speexdsp",
+        "rev": "738e17905e1ca2a1fa932ddd9c2a85d089f4e845",
+        "type": "github"
+      }
+    },
+    "tracy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677421803,
+        "narHash": "sha256-K1lQNRS8+ju9HyKNVXtHqslrPWcPgazzTitvwkIO3P4=",
+        "owner": "wolfpld",
+        "repo": "tracy",
+        "rev": "897aec5b062664d2485f4f9a213715d2e527e0ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wolfpld",
+        "repo": "tracy",
+        "rev": "897aec5b062664d2485f4f9a213715d2e527e0ca",
+        "type": "github"
+      }
+    },
+    "utfcpp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722005312,
+        "narHash": "sha256-Ts6wMeuSX7PDhnWm0dN72cEugQrAFjptRkVXT2FmG4o=",
+        "owner": "mumble-voip",
+        "repo": "utfcpp",
+        "rev": "e717ac3928b759b79c5e7e403fa2ecbcf4697205",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mumble-voip",
+        "repo": "utfcpp",
+        "rev": "e717ac3928b759b79c5e7e403fa2ecbcf4697205",
+        "type": "github"
       }
     }
   },
