@@ -1,0 +1,5 @@
+# OpenAI-compatible endpoint for the florian provider (DeepSeek-V4-Flash-0731).
+# Mirrors config/opencode/config.json.
+model: openai/DeepSeek-V4-Flash-0731
+openai-api-base: https://api.tsd.usit.no/v1/p1337/ai/v1
+# API key sourced from the OPENCODE_FLORIAN_API_KEY env var (see common/home.nix).

@@ -23,6 +23,10 @@
       source = link "opencode/config.json";
       force = true;
     };
+    "aider/aider.conf.yml" = {
+      source = link "aider/aider.conf.yml";
+      force = true;
+    };
   };
 
   # Classic cursor theme
@@ -88,6 +92,9 @@
         umask 022
       fi
       unset _OPENCODE_KEY_CACHE
+
+      # aider reuses the same florian API key as opencode
+      export OPENAI_API_KEY="$OPENCODE_FLORIAN_API_KEY"
 
       __git_branch() {
         local branch

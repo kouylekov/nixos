@@ -144,6 +144,7 @@
     fuzzel
     # Pinned to 1.18.29 — see the nixpkgs-opencode input in flake.nix
     pkgs-opencode.opencode
+    aider-chat
     alacritty
     xdg-desktop-portal-hyprland
     claude-code
