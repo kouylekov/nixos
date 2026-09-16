@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-matterhorn, mumble-fork, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, mumble-fork, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -142,7 +142,8 @@
 
     waybar
     fuzzel
-    opencode
+    # Pinned to 1.18.29 — see the nixpkgs-opencode input in flake.nix
+    pkgs-opencode.opencode
     alacritty
     xdg-desktop-portal-hyprland
     claude-code
@@ -152,7 +153,7 @@
     # the process a few seconds after startup. Drop it and use PulseAudio
     # (served by pipewire-pulse) instead.
     #(mumble.override { pipewireSupport = false; })
-    mumble-fork.packages.${pkgs.system}.mumble
+    mumble-fork.packages.${pkgs.stdenv.hostPlatform.system}.mumble
 
 
     teams-for-linux

@@ -19,6 +19,10 @@
     "waybar/style.css".source = link "waybar/style.css";
     "matterhorn/config.ini".source = link "matterhorn/config.ini";
     "matterhorn/notify".source = link "matterhorn/notify";
+    "opencode/config.json" = {
+      source = link "opencode/config.json";
+      force = true;
+    };
   };
 
   # Classic cursor theme
@@ -71,6 +75,19 @@
     initExtra = ''
       # Disable default venv prompt
       export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+      # opencode API key for the florian provider, sourced from Proton Pass, cached locally
+      _OPENCODE_KEY_CACHE="''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/key"
+      if [ -f "$_OPENCODE_KEY_CACHE" ]; then
+        export OPENCODE_FLORIAN_API_KEY="$(cat "$_OPENCODE_KEY_CACHE")"
+      else
+        export OPENCODE_FLORIAN_API_KEY="$(/home/milen/.local/bin/pass-cli item view --vault-name Work --item-title TSD --field AI-EXT)"
+        mkdir -p "$(dirname "$_OPENCODE_KEY_CACHE")"
+        umask 177
+        printf '%s' "$OPENCODE_FLORIAN_API_KEY" > "$_OPENCODE_KEY_CACHE"
+        umask 022
+      fi
+      unset _OPENCODE_KEY_CACHE
 
       __git_branch() {
         local branch

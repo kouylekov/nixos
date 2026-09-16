@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "florian": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "florian",
+      "options": {
+        "baseURL": "https://api.tsd.usit.no/v1/p1337/ai/v1",
+        "apiKey": "{env:OPENCODE_FLORIAN_API_KEY}"
+      },
+      "models": {
+        "DeepSeek-V4-Flash-0731": {
+          "name": "DeepSeek-V4-Flash-0731",
+          "tool_call": true,
+          "limit": {
+            "context": 500000,
+            "output": 8192
+          },
+          "options": {
+            "reasoningEffort": "high"
+          },
+          "modalities": {
+            "input": ["text"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  }
+}

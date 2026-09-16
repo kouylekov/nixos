@@ -148,12 +148,29 @@
         "type": "github"
       }
     },
+    "nixpkgs-opencode": {
+      "locked": {
+        "lastModified": 1788711913,
+        "narHash": "sha256-uarAE0PgVJQ8Hc3pIINdfRuif8ATdMnMiju1pEJkmrc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d91a239ca0118ff10ee22ba54f48929c38ab8114",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d91a239ca0118ff10ee22ba54f48929c38ab8114",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "mumble-fork": "mumble-fork",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-matterhorn": "nixpkgs-matterhorn"
+        "nixpkgs-matterhorn": "nixpkgs-matterhorn",
+        "nixpkgs-opencode": "nixpkgs-opencode"
       }
     },
     "speexdsp-src": {
