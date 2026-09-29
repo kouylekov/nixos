@@ -102,16 +102,16 @@
         "utfcpp": "utfcpp"
       },
       "locked": {
-        "lastModified": 1788899633,
-        "narHash": "sha256-4OGZqO8czopK7Yua00/V27U2yooZcpWsS9/d2CEGtDE=",
-        "ref": "nix-flake",
-        "rev": "9f5725c133bc7575ecebb66b2d29bcb40c3fe7aa",
-        "revCount": 11968,
+        "lastModified": 1790677761,
+        "narHash": "sha256-b/2FqTqXfuWuJqwKlVGqyQFzwW0hyOnimaWR066U318=",
+        "ref": "master",
+        "rev": "e73f8ba6bd58f8d278e5d18058abaceaa8c39f41",
+        "revCount": 11979,
         "type": "git",
         "url": "https://code.t-juice.club/torjus/mumble.git"
       },
       "original": {
-        "ref": "nix-flake",
+        "ref": "master",
         "type": "git",
         "url": "https://code.t-juice.club/torjus/mumble.git"
       }

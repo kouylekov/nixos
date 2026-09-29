@@ -12,7 +12,7 @@
     # Drop this once nixpkgs ships a build that works again.
     nixpkgs-opencode.url = "github:NixOS/nixpkgs/d91a239ca0118ff10ee22ba54f48929c38ab8114";
     mumble-fork = {
-      url = "git+https://code.t-juice.club/torjus/mumble.git?ref=nix-flake";
+      url = "git+https://code.t-juice.club/torjus/mumble.git?ref=master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
