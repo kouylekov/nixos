@@ -14,9 +14,14 @@
     "hypr" = {
       source = link "hypr";
     };
-    "mako/config".source = link "mako/config";
-    "waybar/config".source = link "waybar/config";
-    "waybar/style.css".source = link "waybar/style.css";
+    # Whole directory, not individual files: noctalia's in-app Settings UI
+    # rewrites config.toml, and it also drops generated palettes/ and
+    # templates/ alongside it. A directory symlink lets those writes land in
+    # the repo; per-file store symlinks would be read-only and break saving.
+    # Runtime state stays out of here (~/.local/state/noctalia).
+    "noctalia" = {
+      source = link "noctalia";
+    };
     "matterhorn/config.ini".source = link "matterhorn/config.ini";
     "matterhorn/notify".source = link "matterhorn/notify";
     "opencode/config.json" = {

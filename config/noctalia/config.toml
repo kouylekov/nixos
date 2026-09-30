@@ -1,0 +1,124 @@
+# Noctalia configuration.
+#
+# This file is live-edited: ~/.config/noctalia is a symlink to this directory,
+# so changes made in the in-app Settings UI (SUPER + comma, or middle-click any
+# bar widget) are written straight back here and show up in `git diff`.
+# Most keys hot-reload via inotify.
+#
+# Only settings that differ from the defaults are kept here. Run
+# `noctalia config validate <file>` to check this file, and see
+# https://docs.noctalia.dev/noctalia/configuration/ for the full reference.
+
+[shell]
+font_family    = "JetBrainsMono Nerd Font"
+time_format    = "{:%H:%M}"
+date_format    = "%A, %x"
+# No polkit agent ran under Hyprland before; noctalia can be the one.
+polkit_agent   = true
+telemetry_enabled = false
+
+[shell.animation]
+# Matches `animations = { enabled = false }` in hyprland.lua.
+enabled = false
+
+[shell.panel]
+transparency_mode = "solid"
+borders           = true
+shadow            = false
+
+[theme]
+mode           = "dark"
+source         = "custom"
+custom_palette = "Mono"
+
+# ── Bar ───────────────────────────────────────────────────────────────────────
+
+# Geometry mirrors the old waybar: 34px tall, 4px off the top, 8px in from the
+# left and right edges.
+[bar.main]
+position           = "top"
+thickness          = 34
+background_opacity = 1.0
+shadow             = false
+radius             = 12
+margin_edge        = 4
+margin_ends        = 8
+padding            = 10
+widget_spacing     = 6
+reserve_space      = true
+
+# Same three groups waybar had, plus the widgets that replace the tools we
+# dropped (notifications for mako, network for nm-applet, clipboard for
+# cliphist, launcher for fuzzel).
+start  = ["launcher", "workspaces", "active_window"]
+center = ["clock"]
+end    = [
+  "keyboard_layout",
+  "media",
+  "tray",
+  "cpu",
+  "memory",
+  "volume",
+  "battery",
+  "notifications",
+  "network",
+  "bluetooth",
+  "control-center",
+  "session",
+]
+
+[widget.cpu]
+type = "sysmon"
+stat = "cpu_usage"
+
+[widget.memory]
+type = "sysmon"
+stat = "ram_pct"
+
+[widget.keyboard_layout]
+# Bulgarian/US switching — the old waybar hyprland/language module.
+display    = "short"
+show_glyph = true
+
+# ── Notifications ─────────────────────────────────────────────────────────────
+
+[notification]
+enable_daemon      = true
+background_opacity = 1.0
+border             = true
+
+# ── Idle & lock ───────────────────────────────────────────────────────────────
+
+# Ported from the old hypridle.conf. Noctalia handles lock, screen-off and
+# suspend natively; only the backlight dim still needs brightnessctl.
+[idle]
+behavior_order = ["dim", "lock", "screen-off", "suspend"]
+
+[idle.behavior.dim]
+timeout        = 300
+action         = "command"
+command        = "brightnessctl -s set 30%"
+resume_command = "brightnessctl -r"
+enabled        = true
+
+[idle.behavior.lock]
+timeout = 600
+action  = "lock"
+enabled = true
+
+[idle.behavior.screen-off]
+timeout = 900
+action  = "screen_off"
+enabled = true
+
+[idle.behavior.suspend]
+timeout = 1800
+action  = "lock_and_suspend"
+enabled = true
+
+[lockscreen]
+enabled         = true
+blurred_desktop = true
+# hypridle used `before_sleep_cmd = loginctl lock-session`; noctalia holds a
+# logind sleep inhibitor and locks on PrepareForSleep instead.
+lock_before_suspend = true

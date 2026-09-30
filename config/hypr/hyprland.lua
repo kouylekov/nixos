@@ -27,26 +27,25 @@ require("monitors-" .. host)
 
 local terminal    = "alacritty"
 local fileManager = "nautilus"
-local menu        = "fuzzel"
 local browser     = "firefox"
+
+-- Noctalia is the desktop shell: bar, launcher, notifications, clipboard
+-- history, control center, OSDs, screenshots, idle handling and the lock
+-- screen. It replaced waybar, mako, hypridle, nm-applet and cliphist.
+-- Everything below drives it over IPC; see `noctalia msg --help`.
+local ipc = "noctalia msg "
 
 -----------------
 --- AUTOSTART ---
 -----------------
 
 hl.on("hyprland.start", function()
-    -- waybar uses hyprland/workspaces, hyprland/window, hyprland/language
-    -- modules which connect to Hyprland's IPC socket; if the socket isn't
-    -- ready when waybar starts, those modules fail and waybar exits silently.
-    -- Poll hyprctl until it answers, then launch.
+    -- Noctalia reads workspaces, the active window and the keyboard layout
+    -- over Hyprland's IPC socket; if the socket isn't ready when it starts
+    -- those views come up empty. Poll hyprctl until it answers, then launch.
     local wait_for_ipc = "until hyprctl monitors >/dev/null 2>&1; do sleep 0.1; done"
-    hl.exec_cmd("sh -c '" .. wait_for_ipc .. "; exec waybar'")
+    hl.exec_cmd("sh -c '" .. wait_for_ipc .. "; exec noctalia'")
     hl.exec_cmd("sh -c '" .. wait_for_ipc .. "; exec gnome-keyring-daemon --start --components=secrets'")
-    hl.exec_cmd("mako")
-    hl.exec_cmd("hypridle")
-    hl.exec_cmd("wl-paste --type text --watch cliphist store")
-    hl.exec_cmd("wl-paste --type image --watch cliphist store")
-    hl.exec_cmd("nm-applet --indicator")
 end)
 
 -----------------------------
@@ -116,7 +115,7 @@ hl.bind(mainMod .. " + Q",      hl.dsp.window.close())
 hl.bind(mainMod .. " + M",      hl.dsp.exit())
 hl.bind(mainMod .. " + E",      hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V",      hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + D",      hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + D",      hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + B",      hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + F",         hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized",  action = "toggle" }))
@@ -124,19 +123,25 @@ hl.bind(mainMod .. " + P",      hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + T",      hl.dsp.layout("togglesplit"))
 
 -- Lock screen
-hl.bind(mainMod .. " + escape", hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + escape", hl.dsp.exec_cmd(ipc .. "session lock"))
 
--- Pass Manager
+-- Noctalia panels
+hl.bind(mainMod .. " + A",     hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
+hl.bind(mainMod .. " + W",     hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
+hl.bind(mainMod .. " + X",     hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
+hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+hl.bind("ALT + Tab",           hl.dsp.exec_cmd(ipc .. "window-switcher hold"))
+
+-- Pass Manager (its own fuzzel --dmenu picker, not the noctalia launcher)
 hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("/home/milen/projects/pass-cli-dmenu/pass-cli-dmenu"))
 
 -- Clipboard history
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("cliphist list | fuzzel -d | cliphist decode | wl-copy"))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"))
 
--- Screenshots
-hl.bind("Print",                    hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
-hl.bind("SHIFT + Print",            hl.dsp.exec_cmd("grim - | wl-copy"))
-hl.bind(mainMod .. " + Print",         hl.dsp.exec_cmd('grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png'))
-hl.bind(mainMod .. " + SHIFT + Print", hl.dsp.exec_cmd('grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png'))
+-- Screenshots. Both land in noctalia's annotation editor, where Ctrl+C copies
+-- and Ctrl+S saves — that covers what the four grim binds used to do.
+hl.bind("Print",         hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd(ipc .. "screenshot-fullscreen"))
 
 -- Move focus (arrows + vim keys)
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
@@ -188,14 +193,27 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Mumble push-to-talk on Mouse5
 hl.bind("mouse:275", hl.dsp.global("info.mumble.Mumble:push_to_talk"), { mouse = true })
 
--- Media keys
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+-- Media keys. Routed through noctalia rather than wpctl/brightnessctl/playerctl
+-- so each keypress also draws the matching OSD overlay.
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(ipc .. "volume-up"),        { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(ipc .. "volume-down"),      { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(ipc .. "volume-mute"),      { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(ipc .. "mic-mute"),         { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(ipc .. "brightness-up"),    { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"),  { locked = true, repeating = true })
+hl.bind("XF86AudioNext",  hl.dsp.exec_cmd(ipc .. "media next"),     { locked = true })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd(ipc .. "media toggle"),   { locked = true })
+hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd(ipc .. "media toggle"),   { locked = true })
+hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd(ipc .. "media previous"), { locked = true })
+
+--------------------
+--- WINDOW RULES ---
+--------------------
+
+-- Noctalia's Settings window is a regular xdg-toplevel; float it instead of
+-- letting dwindle tile it.
+hl.window_rule({
+    name  = "float-noctalia-settings",
+    match = { class = "^dev\\.noctalia\\.Noctalia$" },
+    float = true,
+})

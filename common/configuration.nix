@@ -33,6 +33,8 @@
   # Temporarily disabled due to meson build race condition in nixos-unstable
   # services.flatpak.enable = true;
   services.fwupd.enable = true;
+  # Noctalia's battery widget and power handling read UPower over D-Bus.
+  services.upower.enable = true;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
@@ -140,7 +142,11 @@
     sddm-astronaut
     qt5.qtgraphicaleffects
 
-    waybar
+    # Desktop shell: bar, launcher, notifications, clipboard, control center,
+    # OSDs, lock screen, idle handling and screenshots all live in this one
+    # process. It replaced waybar, mako, hypridle, nm-applet and cliphist.
+    noctalia
+    # Kept for pass-cli-dmenu, which shells out to `fuzzel --dmenu`.
     fuzzel
     # Pinned to 1.18.29 — see the nixpkgs-opencode input in flake.nix
     pkgs-opencode.opencode
@@ -178,18 +184,17 @@
     fd
 
     # Hyprland ecosystem
-    hypridle
+    # hypridle is gone: noctalia drives idle itself via ext_idle_notifier_v1,
+    # and running both would mean two daemons racing to lock the session.
+    # hyprlock stays as a fallback lock if noctalia ever dies mid-session.
     hyprlock
-    mako
     grim
     slurp
     wf-recorder
     wl-clipboard
-    cliphist
     brightnessctl
     playerctl
     pavucontrol
-    networkmanagerapplet
     blueman
     libnotify
     jq
