@@ -82,6 +82,13 @@ show_glyph = true
 
 # ── Notifications ─────────────────────────────────────────────────────────────
 
+# There is no per-notification sound switch; noctalia has one global "Shell
+# Sounds" toggle that covers notification feedback along with every other
+# shell event sound (volume, bluetooth, lock, ...). mako was silent, so match
+# that. sound_theme/sound_volume are inert while this is false.
+[audio]
+enable_sounds = false
+
 [notification]
 enable_daemon      = true
 background_opacity = 1.0
