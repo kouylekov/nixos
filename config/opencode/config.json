@@ -25,6 +25,25 @@
           }
         }
       }
+    },
+    "lumo-tamer": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Lumo (local)",
+      "options": {
+        "baseURL": "http://localhost:3003/v1",
+        "apiKey": "{env:LUMO_API_KEY}"
+      },
+      "models": {
+        "lumo": {
+          "name": "Lumo"
+        },
+        "lumo-lite": {
+          "name": "lumo-lite"
+        },
+        "lumo-max": {
+          "name": "lumo-max"
+        }
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.username = "milen";
@@ -79,6 +79,58 @@
     style.name = "adwaita-dark";
   };
 
+  # lumo-tamer: local OpenAI-compatible proxy for Proton Lumo. Not in nixpkgs,
+  # built from source (see lumo-tamer.nix).
+  home.packages = [
+    (pkgs.callPackage ./lumo-tamer.nix { })
+  ];
+
+  # Runtime state lives in ~/.local/share/lumo-tamer (writable); the Nix store
+  # copy is read-only. Secrets (vault key, API key) are generated on first
+  # activation and never enter the repo.
+  home.activation.lumo-tamer = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    LUMO_HOME="${config.xdg.dataHome}/lumo-tamer"
+    mkdir -p "$LUMO_HOME/sessions"
+    if [ ! -f "$LUMO_HOME/vault.key" ]; then
+      ${pkgs.openssl}/bin/openssl rand -base64 32 > "$LUMO_HOME/vault.key"
+      chmod 600 "$LUMO_HOME/vault.key"
+    fi
+    if [ ! -f "$LUMO_HOME/api.key" ]; then
+      ${pkgs.openssl}/bin/openssl rand -hex 32 > "$LUMO_HOME/api.key"
+      chmod 600 "$LUMO_HOME/api.key"
+    fi
+    if [ ! -f "$LUMO_HOME/config.yaml" ]; then
+      API_KEY="$(cat "$LUMO_HOME/api.key")"
+      cat > "$LUMO_HOME/config.yaml" <<EOF
+  auth:
+    vault:
+      keyFilePath: "$LUMO_HOME/vault.key"
+  server:
+    apiKey: "$API_KEY"
+    port: 3003
+  EOF
+    fi
+  '';
+
+  # Run the OpenAI-compatible API server on localhost:3003. The unit restarts
+  # until `tamer auth login` has been run once (creates the encrypted token
+  # vault), then serves normally.
+  systemd.user.services.tamer = {
+    Unit = {
+      Description = "lumo-tamer - OpenAI-compatible proxy for Proton Lumo";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.callPackage ./lumo-tamer.nix { }}/bin/tamer server";
+      Environment = [ "LUMO_TAMER_HOME=${config.xdg.dataHome}/lumo-tamer" ];
+      Restart = "on-failure";
+      RestartSec = 15;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
   programs.bash = {
     enable = true;
     initExtra = ''
@@ -100,6 +152,18 @@
 
       # aider reuses the same florian API key as opencode
       export OPENAI_API_KEY="$OPENCODE_FLORIAN_API_KEY"
+
+      # lumo-tamer API key (local Proton Lumo proxy on localhost:3003)
+      _LUMO_KEY_FILE="''${XDG_DATA_HOME:-$HOME/.local/share}/lumo-tamer/api.key"
+      if [ -f "$_LUMO_KEY_FILE" ]; then
+        export LUMO_API_KEY="$(cat "$_LUMO_KEY_FILE")"
+      fi
+      unset _LUMO_KEY_FILE
+
+      # lumo-tamer runtime state dir. Without this, the CLI resolves its log
+      # path to the read-only Nix store, pino's transport crashes, and the
+      # process exits silently (code 1) at the login prompt.
+      export LUMO_TAMER_HOME="''${XDG_DATA_HOME:-$HOME/.local/share}/lumo-tamer"
 
       __git_branch() {
         local branch
