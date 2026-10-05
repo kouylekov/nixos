@@ -58,11 +58,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790742230,
-        "narHash": "sha256-5399J1/O3DyLSsYGVa950JtOUDB9Reqvy7FhfDuTVzk=",
+        "lastModified": 1791163078,
+        "narHash": "sha256-DiuwfdoZtEqVRsWuAhXcHa+cfvkr0t/xWW8ugkcxNyI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0aefa652eb6fd8b7396af25e8c81cb0790f12cc2",
+        "rev": "f53f3267f5d009dd8f99443505e609389d7ff267",
         "type": "github"
       },
       "original": {
@@ -102,11 +102,11 @@
         "utfcpp": "utfcpp"
       },
       "locked": {
-        "lastModified": 1790677761,
-        "narHash": "sha256-b/2FqTqXfuWuJqwKlVGqyQFzwW0hyOnimaWR066U318=",
+        "lastModified": 1791172953,
+        "narHash": "sha256-AkTGLNgZ2YG+4EIvGtGqJX48C2kiqaVgL5MpjDsBjhg=",
         "ref": "master",
-        "rev": "e73f8ba6bd58f8d278e5d18058abaceaa8c39f41",
-        "revCount": 11979,
+        "rev": "795bf0228414bdc9ffc7acba79300154188ed523",
+        "revCount": 11980,
         "type": "git",
         "url": "https://code.t-juice.club/torjus/mumble.git"
       },
@@ -118,11 +118,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1790578696,
-        "narHash": "sha256-ZoxIApko70jCdbH3l20HWXOBaT2HZd87orzd2yJ9dVE=",
+        "lastModified": 1791048980,
+        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
+        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
         "type": "github"
       },
       "original": {
