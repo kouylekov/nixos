@@ -199,6 +199,7 @@
     fd
 
     # Wayland tools
+    swaybg
     swayidle
     swaylock
     mako

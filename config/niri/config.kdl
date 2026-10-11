@@ -9,6 +9,7 @@ include "host.kdl"
 /// AUTOSTART ///
 /////////////////
 
+spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/milen/Pictures/wallpaper.png"
 spawn-at-startup "waybar"
 spawn-at-startup "mako"
 spawn-at-startup "nm-applet" "--indicator"
@@ -38,6 +39,8 @@ animations { off; }
 hotkey-overlay { skip-at-startup; }
 
 layout {
+    // Transparent so the backdrop wallpaper (see layer-rule below) shows through.
+    background-color "transparent"
     gaps 8
     center-focused-column "never"
     default-column-width { proportion 0.5; }
@@ -174,4 +177,10 @@ binds {
     XF86AudioPause allow-when-locked=true { spawn-sh "playerctl play-pause"; }
     XF86AudioPlay  allow-when-locked=true { spawn-sh "playerctl play-pause"; }
     XF86AudioPrev  allow-when-locked=true { spawn-sh "playerctl previous"; }
+}
+
+// Show swaybg's wallpaper behind the workspaces in the overview.
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
 }
