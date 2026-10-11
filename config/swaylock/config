@@ -1,0 +1,28 @@
+# Swaylock - Monochromatic theme, matching mako/fuzzel/waybar
+
+color=141414
+font=JetBrainsMono Nerd Font
+indicator-radius=100
+indicator-thickness=8
+show-failed-attempts
+ignore-empty-password
+
+inside-color=1a1a1ae6
+inside-clear-color=1a1a1ae6
+inside-ver-color=1a1a1ae6
+inside-wrong-color=1a1a1ae6
+ring-color=e0e0e0cc
+ring-clear-color=c0c0c0cc
+ring-ver-color=ffffffff
+ring-wrong-color=808080ff
+key-hl-color=ffffffff
+bs-hl-color=808080ff
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
+text-color=e0e0e0
+text-clear-color=e0e0e0
+text-ver-color=e0e0e0
+text-wrong-color=e0e0e0

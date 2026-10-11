@@ -1,0 +1,38 @@
+// Laptop: input and outputs. Included from config.kdl via host.kdl.
+
+input {
+    keyboard {
+        xkb {
+            layout "no,us,bg"
+            variant ",,phonetic"
+            options "grp:alt_shift_toggle"
+        }
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+    focus-follows-mouse
+}
+
+// Built-in display on the right, external on the left.
+// Niri has no output mirroring, so DP-1/DP-2 just extend like the rest.
+output "eDP-1" {
+    scale 1
+    position x=2560 y=0
+}
+
+output "DP-3" {
+    scale 1
+    position x=0 y=0
+}
+
+output "HDMI-A-1" {
+    scale 1
+    position x=0 y=0
+}
+
+output "HDMI-A-2" {
+    scale 1
+    position x=0 y=0
+}

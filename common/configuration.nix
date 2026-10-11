@@ -33,8 +33,6 @@
   # Temporarily disabled due to meson build race condition in nixos-unstable
   # services.flatpak.enable = true;
   services.fwupd.enable = true;
-  # Noctalia's battery widget and power handling read UPower over D-Bus.
-  services.upower.enable = true;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
@@ -104,10 +102,29 @@
   # SSH agent
   programs.ssh.startAgent = true;
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
+  # Niri compositor; config lives in config/niri/.
+  programs.niri.enable = true;
+  services.displayManager.defaultSession = "niri";
+
+  # PAM entry so swaylock can check the password.
+  security.pam.services.swaylock = {};
+
+  # Polkit agent: shows the password prompt when a GUI app asks for admin
+  # rights. Tied to niri's graphical session so it starts and stops with it.
+  security.polkit.enable = true;
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
   };
 
   programs.firefox.enable = true;
@@ -142,17 +159,15 @@
     sddm-astronaut
     qt5.qtgraphicaleffects
 
-    # Desktop shell: bar, launcher, notifications, clipboard, control center,
-    # OSDs, lock screen, idle handling and screenshots all live in this one
-    # process. It replaced waybar, mako, hypridle, nm-applet and cliphist.
-    noctalia
-    # Kept for pass-cli-dmenu, which shells out to `fuzzel --dmenu`.
+    waybar
     fuzzel
     # Pinned to 1.18.29 — see the nixpkgs-opencode input in flake.nix
     pkgs-opencode.opencode
     aider-chat
     alacritty
-    xdg-desktop-portal-hyprland
+    # Niri has no built-in XWayland; it spawns this on demand for X11 apps
+    # (Steam, Discord, Zoom, Horizon, matterhorn's xclip, ...).
+    xwayland-satellite
     claude-code
     discord
     # Mumble's native PipeWire backend spins in its SCHED_RR data-loop thread,
@@ -183,18 +198,19 @@
     ripgrep
     fd
 
-    # Hyprland ecosystem
-    # hypridle is gone: noctalia drives idle itself via ext_idle_notifier_v1,
-    # and running both would mean two daemons racing to lock the session.
-    # hyprlock stays as a fallback lock if noctalia ever dies mid-session.
-    hyprlock
+    # Wayland tools
+    swayidle
+    swaylock
+    mako
     grim
     slurp
     wf-recorder
     wl-clipboard
+    cliphist
     brightnessctl
     playerctl
     pavucontrol
+    networkmanagerapplet
     blueman
     libnotify
     jq
@@ -241,7 +257,7 @@
     # Communication
     pkgs-matterhorn.matterhorn
     xclip  # matterhorn yanks via Hclip, which only knows xclip/xsel (bridged to
-           # the Wayland clipboard by Hyprland's XWayland integration)
+           # the Wayland clipboard by xwayland-satellite)
     zoom-us
 
     # Torrent

@@ -1,0 +1,177 @@
+// Niri configuration: flat mono look with animations off. Waybar, mako,
+// fuzzel, swayidle and swaylock make up the rest of the desktop.
+// Host-specific outputs & input live in host.kdl, which home-manager links to
+// host-<hostname>.kdl. See https://yalter.github.io/niri/Configuration:-Introduction
+
+include "host.kdl"
+
+/////////////////
+/// AUTOSTART ///
+/////////////////
+
+spawn-at-startup "waybar"
+spawn-at-startup "mako"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-sh-at-startup "gnome-keyring-daemon --start --components=secrets"
+spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
+spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
+// Dim after 5 min, lock after 10, screens off after 15, suspend after 30.
+// Niri powers the monitors back on by itself on input.
+spawn-at-startup "swayidle" "-w" \
+    "timeout" "300" "brightnessctl -s set 30%" "resume" "brightnessctl -r" \
+    "timeout" "600" "loginctl lock-session" \
+    "timeout" "900" "niri msg action power-off-monitors" \
+    "timeout" "1800" "systemctl suspend" \
+    "before-sleep" "loginctl lock-session" \
+    "lock" "pidof swaylock || swaylock -f"
+
+environment {
+    PROTON_PASS_KEY_PROVIDER "fs"
+}
+
+/////////////////////
+/// LOOK AND FEEL ///
+/////////////////////
+
+prefer-no-csd
+animations { off; }
+hotkey-overlay { skip-at-startup; }
+
+layout {
+    gaps 8
+    center-focused-column "never"
+    default-column-width { proportion 0.5; }
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    focus-ring { off; }
+    border {
+        width 2
+        active-gradient from="#e0e0e0ee" to="#c0c0c0ee" angle=45
+        inactive-color "#404040aa"
+    }
+    shadow { off; }
+}
+
+////////////////////
+/// WINDOW RULES ///
+////////////////////
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+///////////////////
+/// KEYBINDINGS ///
+///////////////////
+
+// Mod+LMB drag and Mod+RMB resize are built into niri, no binds needed.
+binds {
+    // Core
+    Mod+Return { spawn "alacritty"; }
+    Mod+Q repeat=false { close-window; }
+    Mod+M { quit; }
+    Mod+E { spawn "nautilus"; }
+    Mod+V { toggle-window-floating; }
+    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+D { spawn "fuzzel"; }
+    Mod+B { spawn "firefox"; }
+    Mod+F { fullscreen-window; }
+    Mod+Shift+F { maximize-column; }
+    Mod+T { toggle-column-tabbed-display; }
+    Mod+R { switch-preset-column-width; }
+    Mod+O repeat=false { toggle-overview; }
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // Lock screen
+    Mod+Escape { spawn-sh "pidof swaylock || swaylock -f"; }
+
+    // Pass Manager
+    Mod+U { spawn "/home/milen/projects/pass-cli-dmenu/pass-cli-dmenu"; }
+
+    // Clipboard history
+    Mod+C { spawn-sh "cliphist list | fuzzel -d | cliphist decode | wl-copy"; }
+
+    // Screenshots
+    Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy"; }
+    Shift+Print { spawn-sh "grim - | wl-copy"; }
+    Mod+Print { spawn-sh "grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png"; }
+    Mod+Shift+Print { spawn-sh "grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png"; }
+
+    // Move focus (arrows + vim keys). Left/right fall through to the other
+    // monitor at the screen edge; up/down fall through to the
+    // neighbouring workspace at the edge of a column.
+    Mod+Left  { focus-column-or-monitor-left; }
+    Mod+Right { focus-column-or-monitor-right; }
+    Mod+Up    { focus-window-or-workspace-up; }
+    Mod+Down  { focus-window-or-workspace-down; }
+    Mod+H     { focus-column-or-monitor-left; }
+    Mod+L     { focus-column-or-monitor-right; }
+    Mod+K     { focus-window-or-workspace-up; }
+    Mod+J     { focus-window-or-workspace-down; }
+
+    // Move windows
+    Mod+Shift+Left  { move-column-left-or-to-monitor-left; }
+    Mod+Shift+Right { move-column-right-or-to-monitor-right; }
+    Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
+    Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
+    Mod+Shift+H     { move-column-left-or-to-monitor-left; }
+    Mod+Shift+L     { move-column-right-or-to-monitor-right; }
+    Mod+Shift+K     { move-window-up-or-to-workspace-up; }
+    Mod+Shift+J     { move-window-down-or-to-workspace-down; }
+
+    // Stack / unstack windows in a column
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // Resize windows
+    Mod+Ctrl+Left  { set-column-width "-5%"; }
+    Mod+Ctrl+Right { set-column-width "+5%"; }
+    Mod+Ctrl+Up    { set-window-height "-5%"; }
+    Mod+Ctrl+Down  { set-window-height "+5%"; }
+
+    // Workspaces 1-10
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+    Mod+Shift+1 { move-window-to-workspace 1; }
+    Mod+Shift+2 { move-window-to-workspace 2; }
+    Mod+Shift+3 { move-window-to-workspace 3; }
+    Mod+Shift+4 { move-window-to-workspace 4; }
+    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+7 { move-window-to-workspace 7; }
+    Mod+Shift+8 { move-window-to-workspace 8; }
+    Mod+Shift+9 { move-window-to-workspace 9; }
+    Mod+Shift+0 { move-window-to-workspace 10; }
+
+    // Cycle workspaces
+    Mod+Tab       { focus-workspace-down; }
+    Mod+Shift+Tab { focus-workspace-up; }
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft  { focus-column-left; }
+
+    // Media keys
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn-sh "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
+    XF86AudioMute         allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute      allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn-sh "brightnessctl -e4 -n2 set 5%+"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "brightnessctl -e4 -n2 set 5%-"; }
+    XF86AudioNext  allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioPlay  allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioPrev  allow-when-locked=true { spawn-sh "playerctl previous"; }
+}

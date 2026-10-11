@@ -1,0 +1,25 @@
+// Desktop: input and outputs. Included from config.kdl via host.kdl.
+
+input {
+    keyboard {
+        xkb {
+            layout "us,bg"
+            variant ",phonetic"
+            options "grp:alt_shift_toggle"
+        }
+    }
+    focus-follows-mouse
+}
+
+// Dual monitor: LG on the left, Acer on the right. Matched by make/model/serial
+// so it doesn't depend on which DP port each monitor is plugged into.
+output "LG Electronics LG ULTRAGEAR 111NTNH79111" {
+    scale 1
+    position x=0 y=0
+}
+
+output "Acer Technologies XB271HU #ASPdJhMBHerd" {
+    scale 1
+    mode "2560x1440@143.998"
+    position x=2560 y=0
+}

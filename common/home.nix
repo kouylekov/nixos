@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, osConfig, ... }:
 
 {
   home.username = "milen";
@@ -11,17 +11,14 @@
   in {
     "alacritty/alacritty.toml".source = link "alacritty/alacritty.toml";
     "fuzzel/fuzzel.ini".source = link "fuzzel/fuzzel.ini";
-    "hypr" = {
-      source = link "hypr";
-    };
-    # Whole directory, not individual files: noctalia's in-app Settings UI
-    # rewrites config.toml, and it also drops generated palettes/ and
-    # templates/ alongside it. A directory symlink lets those writes land in
-    # the repo; per-file store symlinks would be read-only and break saving.
-    # Runtime state stays out of here (~/.local/state/noctalia).
-    "noctalia" = {
-      source = link "noctalia";
-    };
+    # Per-file rather than the whole directory so host.kdl can point at this
+    # machine's variant; config.kdl includes it.
+    "niri/config.kdl".source = link "niri/config.kdl";
+    "niri/host.kdl".source = link "niri/host-${osConfig.networking.hostName}.kdl";
+    "mako/config".source = link "mako/config";
+    "waybar/config".source = link "waybar/config";
+    "waybar/style.css".source = link "waybar/style.css";
+    "swaylock/config".source = link "swaylock/config";
     "matterhorn/config.ini".source = link "matterhorn/config.ini";
     "matterhorn/notify".source = link "matterhorn/notify";
     "opencode/config.json" = {
@@ -43,7 +40,7 @@
     gtk.enable = true;
   };
 
-  # Monochromatic dark theme matching Hyprland/Waybar/Ghostty
+  # Monochromatic dark theme matching niri/Waybar/mako
   gtk = {
     enable = true;
     theme = {
@@ -195,7 +192,7 @@
     enable = true;
     notify = true;
     automount = true;
-    tray = "never";  # no tray icon needed on Hyprland
+    tray = "never";  # no tray icon needed
   };
 
   programs.neovim = {
