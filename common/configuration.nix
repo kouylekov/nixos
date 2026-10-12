@@ -129,6 +129,32 @@
 
   programs.firefox.enable = true;
 
+  # niri isn't a DE that xdg-open knows, so it takes its "generic" path. If the
+  # caller's environment lacks XDG_DATA_DIRS it can't find firefox.desktop and
+  # falls back to a hardcoded list starting with Debian's x-www-browser, which
+  # doesn't exist here ("x-www-browser: command not found"). Setting BROWSER
+  # short-circuits that list; the explicit mime defaults stop the lookup from
+  # depending on mimeinfo.cache scanning.
+  environment.sessionVariables.BROWSER = "firefox";
+  xdg.mime.defaultApplications = {
+    "text/html" = "firefox.desktop";
+    "x-scheme-handler/http" = "firefox.desktop";
+    "x-scheme-handler/https" = "firefox.desktop";
+  } // lib.genAttrs [
+    # Without these, image/* has no handler at all and xdg-open dumps pictures
+    # into a Firefox tab. imv ships imv.desktop covering all of these.
+    "image/png"
+    "image/jpeg"
+    "image/gif"
+    "image/webp"
+    "image/bmp"
+    "image/tiff"
+    "image/avif"
+    "image/heif"
+    "image/jxl"
+    "image/svg+xml"
+  ] (_: "imv.desktop");
+
   # Podman
   virtualisation.podman = {
     enable = true;
@@ -205,6 +231,7 @@
     mako
     grim
     slurp
+    imv
     wf-recorder
     wl-clipboard
     cliphist
