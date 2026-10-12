@@ -128,6 +128,58 @@
     Install.WantedBy = [ "default.target" ];
   };
 
+  # Replaces the old `spawn-at-startup "swaybg"` in niri's config.kdl. Advances
+  # one step through wallpapers/ (sorted, so the order is stable) on every
+  # login and remembers where it got to, then becomes swaybg itself - so the
+  # unit's lifetime is swaybg's, and graphical-session.target reaps it.
+  systemd.user.services.wallpaper = {
+    Unit = {
+      Description = "Set the desktop wallpaper, rotating on each login";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.writeShellScript "set-wallpaper" ''
+        export PATH="${lib.makeBinPath [ pkgs.coreutils pkgs.findutils pkgs.swaybg ]}"
+        dir="/home/milen/nixos/wallpapers"
+        state="${config.xdg.stateHome}/wallpaper-index"
+
+        # Everything swaybg's gdk-pixbuf loaders can decode, so dropping a new
+        # file in the folder Just Works without editing this list.
+        mapfile -t imgs < <(find "$dir" -maxdepth 1 -type f \( \
+          -iname '*.png'  -o -iname '*.jpg' -o -iname '*.jpeg' -o \
+          -iname '*.webp' -o -iname '*.jxl' -o -iname '*.bmp'  -o \
+          -iname '*.gif'  -o -iname '*.tif' -o -iname '*.tiff' -o \
+          -iname '*.tga'  -o -iname '*.svg' \) | sort)
+        if [ "''${#imgs[@]}" -eq 0 ]; then
+          echo "no images in $dir" >&2
+          exit 1
+        fi
+
+        # Remember the last filename rather than its index: adding or deleting
+        # images then shifts the sequence instead of scrambling it. An unknown
+        # or missing name (first run, file deleted) restarts at the top.
+        prev=""
+        [ -r "$state" ] && prev="$(cat "$state")"
+        i=-1
+        for n in "''${!imgs[@]}"; do
+          if [ "''${imgs[$n]}" = "$prev" ]; then i=$n; break; fi
+        done
+        i=$(( (i + 1) % ''${#imgs[@]} ))
+
+        mkdir -p "$(dirname "$state")"
+        echo "''${imgs[$i]}" > "$state"
+
+        echo "wallpaper: ''${imgs[$i]}"
+        exec swaybg -m fill -i "''${imgs[$i]}"
+      ''}";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   programs.bash = {
     enable = true;
     initExtra = ''

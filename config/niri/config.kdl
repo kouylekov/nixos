@@ -9,7 +9,8 @@ include "host.kdl"
 /// AUTOSTART ///
 /////////////////
 
-spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/milen/Pictures/wallpaper.png"
+// swaybg is not started here: the wallpaper.service user unit (see home.nix)
+// runs it, stepping to the next image in ~/nixos/wallpapers on each login.
 spawn-at-startup "waybar"
 spawn-at-startup "mako"
 spawn-at-startup "nm-applet" "--indicator"
