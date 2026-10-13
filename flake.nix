@@ -11,17 +11,13 @@
     # is specific to the nixpkgs source build. Pin the last good one, 1.18.29.
     # Drop this once nixpkgs ships a build that works again.
     nixpkgs-opencode.url = "github:NixOS/nixpkgs/d91a239ca0118ff10ee22ba54f48929c38ab8114";
-    mumble-fork = {
-      url = "git+https://code.t-juice.club/torjus/mumble.git?ref=master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, mumble-fork, home-manager }:
+  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, home-manager }:
   let
     system = "x86_64-linux";
     pkgs-matterhorn = import nixpkgs-matterhorn { inherit system; };
@@ -29,7 +25,7 @@
   in {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode mumble-fork; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
       modules = [
         ./hosts/desktop/configuration.nix
         home-manager.nixosModules.home-manager
@@ -38,7 +34,7 @@
 
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode mumble-fork; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
       modules = [
         ./hosts/laptop/configuration.nix
         home-manager.nixosModules.home-manager

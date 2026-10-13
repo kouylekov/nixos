@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, mumble-fork, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -200,8 +200,12 @@
     # blowing the 200ms RLIMIT_RTTIME rtkit grants it, so the kernel SIGKILLs
     # the process a few seconds after startup. Drop it and use PulseAudio
     # (served by pipewire-pulse) instead.
-    #(mumble.override { pipewireSupport = false; })
-    mumble-fork.packages.${pkgs.stdenv.hostPlatform.system}.mumble
+    #
+    # We used to pull Mumble from torjus' fork, which adds Wayland global
+    # shortcuts (push-to-talk while unfocused) via the xdg-desktop-portal
+    # GlobalShortcuts interface. Niri doesn't implement that portal, so the
+    # fork buys us nothing here — back to the nixpkgs package.
+    (mumble.override { pipewireSupport = false; })
 
 
     teams-for-linux
