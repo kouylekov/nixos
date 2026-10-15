@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, pkgs-zen, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -191,6 +191,9 @@
     pkgs-opencode.opencode
     aider-chat
     alacritty
+    # Zen (beta channel) from the zen-browser flake — see flake.nix. Firefox
+    # stays the default browser; this is just installed alongside it.
+    pkgs-zen.beta
     # Niri has no built-in XWayland; it spawns this on demand for X11 apps
     # (Steam, Discord, Zoom, Horizon, matterhorn's xclip, ...).
     xwayland-satellite
