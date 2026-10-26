@@ -15,23 +15,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Zen isn't in nixpkgs; this community flake wraps the upstream binaries.
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, home-manager, zen-browser }:
+  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, home-manager }:
   let
     system = "x86_64-linux";
     pkgs-matterhorn = import nixpkgs-matterhorn { inherit system; };
     pkgs-opencode = import nixpkgs-opencode { inherit system; };
-    pkgs-zen = zen-browser.packages.${system};
   in {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode pkgs-zen; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
       modules = [
         ./hosts/desktop/configuration.nix
         home-manager.nixosModules.home-manager
@@ -40,7 +34,7 @@
 
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode pkgs-zen; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
       modules = [
         ./hosts/laptop/configuration.nix
         home-manager.nixosModules.home-manager
