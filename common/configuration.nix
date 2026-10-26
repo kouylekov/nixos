@@ -283,6 +283,7 @@
     pre-commit
     openshift
     psmisc
+    unzip
     btop
 
     # Communication
