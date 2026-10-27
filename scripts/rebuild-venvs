@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+#
+# Rebuild Python virtualenvs whose pinned interpreter was garbage-collected by
+# Nix. Poetry venvs live in ~/.cache/pypoetry/virtualenvs and uv venvs live in
+# <project>/.venv; both record absolute /nix/store paths that disappear when
+# nixpkgs bumps a Python patch version and the weekly GC runs.
+#
+# Usage:
+#   rebuild-venvs                 dry-run: only venvs with a missing interpreter
+#   rebuild-venvs --all           dry-run: every detected venv
+#   rebuild-venvs --apply         rebuild the broken ones
+#   rebuild-venvs --all --apply   rebuild everything
+#   rebuild-venvs --apply tsd-hpc tsd-iam   limit to the named projects
+#
+# Safe by default: nothing is changed without --apply.
+set -euo pipefail
+
+FLAKE=/home/milen/nixos/config/projects
+PROJECTS_DIR=${PROJECTS_DIR:-$HOME/projects}
+
+# Enter the dev shell (poetry, uv, python) if we're not already in it.
+if [[ -z ${REBUILD_VENVS_IN_SHELL:-} ]] && ! command -v poetry >/dev/null 2>&1; then
+  export REBUILD_VENVS_IN_SHELL=1
+  exec nix develop "$FLAKE" --command "$0" "$@"
+fi
+
+apply=0
+mode=broken
+selected=()
+
+for arg in "$@"; do
+  case "$arg" in
+    --apply)  apply=1 ;;
+    --all)    mode=all ;;
+    --broken) mode=broken ;;
+    -h|--help) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -*) echo "unknown option: $arg" >&2; exit 2 ;;
+    *) selected+=("$arg") ;;
+  esac
+done
+
+# True when a pyvenv.cfg points at a /nix/store interpreter that no longer exists.
+venv_broken() {
+  local cfg=$1 sp
+  [[ -f $cfg ]] || return 1
+  sp=$(grep -m1 -E '^(base-executable|home|executable) *=' "$cfg" | grep -o '/nix/store/[^/]*') || true
+  [[ -n $sp && ! -e $sp ]]
+}
+
+projects=()
+if (( ${#selected[@]} )); then
+  for n in "${selected[@]}"; do projects+=("$PROJECTS_DIR/$n"); done
+else
+  while IFS= read -r -d '' d; do projects+=("$d"); done \
+    < <(find "$PROJECTS_DIR" -maxdepth 1 -mindepth 1 -type d -print0)
+fi
+
+broken=0; rebuilt=0; skipped=0; failed=0
+
+for d in "${projects[@]}"; do
+  [[ -d $d ]] || { echo "missing project: $d" >&2; continue; }
+  name=$(basename "$d")
+  [[ -f $d/pyproject.toml || -f $d/uv.lock || -f $d/poetry.lock ]] || continue
+
+  if [[ -f $d/uv.lock && -d $d/.venv ]]; then
+    manager=uv
+  elif [[ -f $d/poetry.lock ]]; then
+    manager=poetry
+  elif [[ -f $d/uv.lock ]]; then
+    manager=uv
+  else
+    continue
+  fi
+
+  if [[ $manager == poetry ]]; then
+    vpath=$(cd "$d" && poetry env info --path 2>/dev/null) || vpath=""
+    if [[ -z $vpath ]]; then
+      echo "skip     $name (poetry: no venv yet)"; skipped=$((skipped + 1)); continue
+    fi
+    cfg=$vpath/pyvenv.cfg
+  else
+    cfg=$d/.venv/pyvenv.cfg
+    if [[ ! -f $cfg ]]; then
+      echo "skip     $name (uv: no .venv yet)"; skipped=$((skipped + 1)); continue
+    fi
+  fi
+
+  if venv_broken "$cfg"; then
+    status=broken; broken=$((broken + 1))
+  elif [[ $mode == all ]]; then
+    status=working
+  else
+    echo "ok       $name ($manager): interpreter present"; skipped=$((skipped + 1)); continue
+  fi
+
+  if (( ! apply )); then
+    printf 'would rebuild  %-40s (%s, %s)\n' "$name" "$manager" "$status"
+    continue
+  fi
+
+  printf '>> rebuilding %-38s (%s)\n' "$name" "$manager"
+  if [[ $manager == poetry ]]; then
+    if ( cd "$d" && poetry env remove --all >/dev/null 2>&1 || true; poetry install ); then
+      echo "ok       $name"; rebuilt=$((rebuilt + 1))
+    else
+      echo "FAILED   $name"; failed=$((failed + 1))
+    fi
+  else
+    if ( cd "$d" && rm -rf .venv && uv sync ); then
+      echo "ok       $name"; rebuilt=$((rebuilt + 1))
+    else
+      echo "FAILED   $name"; failed=$((failed + 1))
+    fi
+  fi
+done
+
+echo
+if (( apply )); then
+  echo "rebuilt=$rebuilt failed=$failed skipped=$skipped"
+  (( failed == 0 )) || exit 1
+else
+  echo "dry-run: broken=$broken skipped=$skipped  (add --apply to rebuild)"
+fi

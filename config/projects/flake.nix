@@ -17,43 +17,11 @@
           pipx = prev.pipx.overridePythonAttrs (old: {
             doCheck = false;
           });
-          # pip-api (a pip-audit dependency) resolves the pip version by
-          # spawning `sys.executable -m pip --version`. sys.executable is the
-          # bare interpreter in the store, which can't import pip (pip lives in
-          # its own output). Wrap pip-audit so pip's site-packages is on
-          # PYTHONPATH for this subprocess, without leaking PYTHONPATH into the
-          # rest of the dev shell.
-          pip-audit = let
-            real = prev.pip-audit;
-            pipSitePackage = "${prev.python314.pkgs.pip}/${prev.python314.sitePackages}";
-          in prev.writeShellScriptBin "pip-audit" ''
-            export PYTHONPATH="${pipSitePackage}''${PYTHONPATH:+:$PYTHONPATH}"
-            exec "${real}/bin/pip-audit" "$@"
-          '';
         })
       ];
     };
-    python = pkgs.python314;
     postgresql = pkgs.postgresql;
 
-    # psycopg2 needs pg_config which nixpkgs no longer ships as a binary
-    pg_config = pkgs.writeShellScriptBin "pg_config" ''
-      case "$1" in
-        --includedir)    echo "${postgresql.dev}/include";;
-        --libdir)        echo "${postgresql.lib}/lib";;
-        --pkglibdir)     echo "${postgresql}/lib";;
-        --bindir)        echo "${postgresql}/bin";;
-        --sharedir)      echo "${postgresql}/share";;
-        --sysconfdir)    echo "/etc";;
-        --pgxs)          echo "${postgresql.dev}/lib/pgxs/src/makefiles/pgxs.mk";;
-        --includedir-server) echo "${postgresql.dev}/include/server";;
-        --version)       echo "PostgreSQL ${postgresql.version}";;
-        --cflags)        echo "-I${postgresql.dev}/include";;
-        --ldflags)       echo "-L${postgresql.lib}/lib";;
-        --libs)          echo "-lpq";;
-        *)               echo "${postgresql.dev}/include";;
-      esac
-    '';
     # Poetry with poetry-dynamic-versioning so `poetry install` can satisfy the
     # project's [tool.poetry.requires-plugins] without writing to the read-only
     # Nix store. The plugin comes from python3Packages (same interpreter poetry
@@ -64,15 +32,12 @@
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = [
-        python
         pkgs.uv
         pkgs.migrate-to-uv
         poetryWithPlugins
         pkgs.pipx
-        pkgs.pip-audit
-        pg_config
+        postgresql.pg_config
         pkgs.pkg-config
-        pkgs.gcc
         pkgs.gnumake
         postgresql
         # Node.js provides `npx`, used to run the Redocly CLI for API docs
