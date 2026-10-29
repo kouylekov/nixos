@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# SSH_ASKPASS helper: answers UiO password/OTP prompts from Proton Pass.
+# ssh calls this once per prompt with the prompt text as $1, e.g.
+# "(milen-drift@rlogin.uio.no) Password: ".
+set -euo pipefail
+
+PASS_CLI=/home/milen/.local/bin/pass-cli
+VAULT="${UIO_PASS_VAULT:-Work}"
+
+prompt="${1:-}"
+
+# Pick the Proton Pass item from the user in the prompt: "(user@host) ..." for
+# keyboard-interactive, "user@host's password:" for plain password auth.
+case "$prompt" in
+  *"milen-drift@"*) ITEM="${UIO_PASS_ITEM_DRIFT:-drift}" ;;
+  *"milen@"*)       ITEM="${UIO_PASS_ITEM_MILEN:-milen}" ;;
+  *) exit 1 ;;
+esac
+
+case "$prompt" in
+  *[Pp]assword*)
+    "$PASS_CLI" item view --vault-name "$VAULT" --item-title "$ITEM" --field password
+    ;;
+  *[Cc]ode*|*OTP*|*[Oo]ne-time*|*[Vv]erification*|*[Tt]oken*)
+    "$PASS_CLI" item totp --vault-name "$VAULT" --item-title "$ITEM" | grep -oE '[0-9]{6,8}' | head -1
+    ;;
+  *)
+    # Unknown prompt (e.g. host key confirmation): refuse rather than guess.
+    exit 1
+    ;;
+esac
