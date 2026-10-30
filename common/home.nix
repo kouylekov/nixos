@@ -176,6 +176,53 @@
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
+  # Keep ~/KeePass in sync with Google Drive, so the same database is shared
+  # between this machine and Android. Configure the remote once with
+  # `rclone config` (name it "google-drive").
+  #
+  # This is deliberately NOT rclone bisync: bisync aborts ("all files were
+  # changed") whenever 100% of files differ from its saved state, and with a
+  # single .kdbx every edit trips that guard. Instead copy in both directions
+  # with --update, so the newest file wins and nothing is ever deleted.
+  systemd.user.services.rclone-keepass = {
+    Unit = {
+      Description = "Sync the KeePassXC database with Google Drive";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "keepass-sync" ''
+        set -euo pipefail
+        export PATH="${lib.makeBinPath [ pkgs.rclone pkgs.coreutils ]}"
+
+        local_dir="$HOME/KeePass"
+        remote="google-drive:KeePass"
+
+        mkdir -p "$local_dir"
+        # Make sure the Drive-side folder exists before the first sync.
+        rclone mkdir "$remote" || true
+
+        args=(--update --exclude '*.lock' --exclude '.~lock.*' --exclude '*.tmp')
+
+        # Newest wins in both directions; --update means an older copy is never
+        # allowed to overwrite a newer one, and copy never deletes.
+        rclone copy "$local_dir" "$remote" "''${args[@]}"
+        rclone copy "$remote" "$local_dir" "''${args[@]}"
+      ''}";
+    };
+  };
+
+  systemd.user.timers.rclone-keepass = {
+    Unit.Description = "Periodically sync the KeePassXC database with Google Drive";
+    Timer = {
+      OnBootSec = "2min";
+      OnUnitActiveSec = "5min";
+      Persistent = true;
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
+
   programs.bash = {
     enable = true;
     initExtra = ''

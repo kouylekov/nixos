@@ -6,11 +6,11 @@
 #   kpxc clip "Group/Entry"
 #   kpxc ls
 #
-# The database path comes from $KPXC_DB (default: ~/Documents/Passwords.kdbx)
+# The database path comes from $KPXC_DB (default: ~/KeePass/Passwords.kdbx)
 # and is injected as keepassxc-cli's first positional argument.
 set -euo pipefail
 
-DB="${KPXC_DB:-$HOME/Documents/Passwords.kdbx}"
+DB="${KPXC_DB:-$HOME/KeePass/Passwords.kdbx}"
 MASTER_KEY="${KPXC_MASTER_KEY:-keepassxc/master}"
 
 if [ ! -f "$DB" ]; then
