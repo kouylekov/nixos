@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Prints the Mattermost access token for matterhorn's tokencmd.
+#
+# matterhorn splits tokencmd on whitespace without a shell, so the KeePassXC
+# entry path (which contains spaces) can't be quoted inline in config.ini.
+# Keep the path here instead and point tokencmd at this script.
+set -euo pipefail
+
+exec /home/milen/nixos/scripts/kpxc show -s -a Password "Work/Mattermost"

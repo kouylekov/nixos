@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Wrapper around keepassxc-cli that unlocks the database with the master
+# password stored in `pass` (entry: keepassxc/master), so scripts never prompt.
+#
+#   kpxc show -s -a Password "Group/Entry"
+#   kpxc clip "Group/Entry"
+#   kpxc ls
+#
+# The database path comes from $KPXC_DB (default: ~/Documents/Passwords.kdbx)
+# and is injected as keepassxc-cli's first positional argument.
+set -euo pipefail
+
+DB="${KPXC_DB:-$HOME/Documents/Passwords.kdbx}"
+MASTER_KEY="${KPXC_MASTER_KEY:-keepassxc/master}"
+
+if [ ! -f "$DB" ]; then
+  echo "kpxc: database not found: $DB (set KPXC_DB)" >&2
+  exit 1
+fi
+
+master="$(pass show "$MASTER_KEY")"
+trap 'unset master' EXIT
+
+# keepassxc-cli reads the master password from stdin when it is not a TTY.
+# The prompt it prints goes to stderr, so stdout stays clean for scripting.
+printf '%s\n' "$master" | keepassxc-cli "$1" "$DB" "${@:2}"

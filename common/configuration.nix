@@ -303,6 +303,7 @@
 
     # Password manager
     keepassxc
+    pass
   ];
 
   system.stateVersion = "25.11";

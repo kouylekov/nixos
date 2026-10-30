@@ -94,7 +94,7 @@ binds {
     Mod+Escape { spawn-sh "pidof swaylock || swaylock -f"; }
 
     // Pass Manager
-    Mod+U { spawn "/home/milen/projects/pass-cli-dmenu/pass-cli-dmenu"; }
+    Mod+U { spawn "/home/milen/projects/kpxc-dmenu/kpxc-dmenu"; }
 
     // Clipboard history
     Mod+C { spawn-sh "cliphist list | fuzzel -d | cliphist decode | wl-copy"; }

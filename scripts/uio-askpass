@@ -1,28 +1,29 @@
 #!/usr/bin/env bash
-# SSH_ASKPASS helper: answers UiO password/OTP prompts from Proton Pass.
+# SSH_ASKPASS helper: answers UiO password/OTP prompts from KeePassXC.
 # ssh calls this once per prompt with the prompt text as $1, e.g.
 # "(milen-drift@rlogin.uio.no) Password: ".
 set -euo pipefail
 
-PASS_CLI=/home/milen/.local/bin/pass-cli
-VAULT="${UIO_PASS_VAULT:-Work}"
+KPXC="/home/milen/nixos/scripts/kpxc"
+# Group in the KeePassXC database holding the UiO accounts.
+KPXC_DIR="${UIO_KPXC_DIR:-Work}"
 
 prompt="${1:-}"
 
-# Pick the Proton Pass item from the user in the prompt: "(user@host) ..." for
+# Pick the KeePassXC entry from the user in the prompt: "(user@host) ..." for
 # keyboard-interactive, "user@host's password:" for plain password auth.
 case "$prompt" in
-  *"milen-drift@"*) ITEM="${UIO_PASS_ITEM_DRIFT:-drift}" ;;
-  *"milen@"*)       ITEM="${UIO_PASS_ITEM_MILEN:-milen}" ;;
+  *"milen-drift@"*) ENTRY="${UIO_KPXC_ENTRY_DRIFT:-drift}" ;;
+  *"milen@"*)       ENTRY="${UIO_KPXC_ENTRY_MILEN:-milen}" ;;
   *) exit 1 ;;
 esac
 
 case "$prompt" in
   *[Pp]assword*)
-    "$PASS_CLI" item view --vault-name "$VAULT" --item-title "$ITEM" --field password
+    "$KPXC" show -s -a Password "$KPXC_DIR/$ENTRY"
     ;;
   *[Cc]ode*|*OTP*|*[Oo]ne-time*|*[Vv]erification*|*[Tt]oken*)
-    "$PASS_CLI" item totp --vault-name "$VAULT" --item-title "$ITEM" | grep -oE '[0-9]{6,8}' | head -1
+    "$KPXC" show -t "$KPXC_DIR/$ENTRY"
     ;;
   *)
     # Unknown prompt (e.g. host key confirmation): refuse rather than guess.
