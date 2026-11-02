@@ -161,7 +161,13 @@
     dockerCompat = true;
     defaultNetwork.settings.dns_enabled = true;
   };
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    # omnissa-horizon-client still pulls gtk2 into its FHS environment, but
+    # nixpkgs now marks gtk+ as broken ahead of its removal in NixOS 27.05.
+    # Drop this once Horizon stops depending on gtk2.
+    problems.handlers."gtk+".broken = "warn";
+  };
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
