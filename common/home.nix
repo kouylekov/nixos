@@ -223,6 +223,11 @@
     tray = "never";  # no tray icon needed
   };
 
+  programs.git = {
+    enable = true;
+    settings.diff.algorithm = "histogram";
+  };
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -298,6 +303,8 @@
       o.termguicolors = true
       o.spell = true
       o.spelllang = 'en_us'
+      -- Use histogram diff algorithm by default (also picked up by gitsigns)
+      o.diffopt:append('algorithm:histogram')
       vim.diagnostic.config({ virtual_text = true })
 
       -- Spelling: make errors stand out clearly (undercurl + tinted background)
