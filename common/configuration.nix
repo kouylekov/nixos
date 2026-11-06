@@ -33,6 +33,14 @@
   # Temporarily disabled due to meson build race condition in nixos-unstable
   # services.flatpak.enable = true;
   services.fwupd.enable = true;
+  # `fwupdmgr refresh` runs as the unprivileged fwupd-refresh user and asks
+  # polkit for authorization, but upstream's unit has no ordering on polkit.
+  # Without this, a switch that restarts polkit can fire the refresh timer in
+  # the gap ("PolicyKit daemon is not available") and mark the unit failed.
+  systemd.services.fwupd-refresh = {
+    wants = [ "polkit.service" ];
+    after = [ "polkit.service" ];
+  };
 
   # Bluetooth
   hardware.bluetooth.enable = true;
