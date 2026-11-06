@@ -32,7 +32,7 @@
     "clock": {
         "format": "{:%H:%M}",
         "format-alt": "{:%A, %B %d, %Y}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "mode": "year",
             "mode-mon-col": 3,
