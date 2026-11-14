@@ -37,4 +37,26 @@
     wine
     winetricks
   ];
+
+  # UGREEN NAS (DXP4800 Plus) shared folder over SMB/CIFS. The `personal_folder`
+  # share maps to the NAS user's home (/home/milen). Credentials live
+  # root-readable at ~/.config/ugreen/ugreen.cred (mode 600, pulled from
+  # KeePassXC "Local Admin/UGREEN NAS") and never enter the repo. automount +
+  # nofail so the desktop still boots if the NAS is unreachable.
+  fileSystems."/mnt/ugreen" = {
+    device = "//192.168.50.139/personal_folder";
+    fsType = "cifs";
+    options = [
+      "credentials=/home/milen/.config/ugreen/ugreen.cred"
+      "uid=1000"
+      "gid=100"
+      "file_mode=0660"
+      "dir_mode=0770"
+      "iocharset=utf8"
+      "nofail"
+      "_netdev"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=60"
+    ];
+  };
 }
