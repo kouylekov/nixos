@@ -8,7 +8,9 @@
 
   networking.hostName = "desktop";
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  # linux-zen 7.3.4 panics at boot (NULL deref in bh_worker while xhci_pci
+  # probes the onboard USB controller). Vanilla latest until fixed.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # AMD GPU
   hardware.graphics = {
