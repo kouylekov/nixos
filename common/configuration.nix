@@ -228,7 +228,7 @@
     gcc
 
     # Neovim LSP servers
-    pyright
+    ty
     gopls
     golangci-lint-langserver
     golangci-lint

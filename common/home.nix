@@ -440,27 +440,14 @@
       -- LSP setup with completion capabilities (Neovim 0.11+ native API)
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      -- Pyright: type checking, hover, go-to-definition, references
-      local venv = vim.env.VIRTUAL_ENV
-      vim.lsp.config['pyright'] = {
-        cmd = { 'pyright-langserver', '--stdio' },
+      -- ty: Astral's fast type checker (alpha). Discovers VIRTUAL_ENV/.venv itself.
+      vim.lsp.config['ty'] = {
+        cmd = { 'ty', 'server' },
         filetypes = { 'python' },
-        root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
+        root_markers = { 'pyproject.toml', 'ty.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
         capabilities = capabilities,
-        settings = {
-          python = {
-            pythonPath = venv and (venv .. '/bin/python') or nil,
-            venvPath = venv and vim.fs.dirname(venv) or nil,
-            venv = venv and vim.fs.basename(venv) or nil,
-            analysis = {
-              autoSearchPaths = true,
-              diagnosticMode = 'workspace',
-              useLibraryCodeForTypes = true,
-            },
-          },
-        },
       }
-      vim.lsp.enable('pyright')
+      vim.lsp.enable('ty')
 
       -- Ruff: fast linting diagnostics and formatting via LSP
       vim.lsp.config['ruff'] = {
