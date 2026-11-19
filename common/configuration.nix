@@ -1,6 +1,29 @@
 { config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, ... }:
 
 {
+  # nixpkgs-unstable still ships mise 2026.10.17, but tsd-deployment requires
+  # >= 2026.11.3 (min_version in .mise/config.toml). Use upstream's static musl
+  # release until nixpkgs catches up. Drop this overlay once it does.
+  nixpkgs.overlays = [
+    (final: prev: {
+      mise = prev.stdenvNoCC.mkDerivation {
+        pname = "mise";
+        version = "2026.11.9";
+        src = prev.fetchurl {
+          url = "https://github.com/jdx/mise/releases/download/v2026.11.9/mise-v2026.11.9-linux-x64-musl.tar.xz";
+          hash = "sha256-n1SR2ID7qYmXfLviOmjZWeBoi8gK4qAlZZLOX26BxCM=";
+        };
+        dontBuild = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp -r bin man share LICENSE $out/
+          runHook postInstall
+        '';
+      };
+    })
+  ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 

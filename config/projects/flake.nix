@@ -10,6 +10,7 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
+      config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "vault" ];
       overlays = [
         (final: prev: {
           # Skip failing tests in pipx 1.8.0 - waiting for upstream fix
@@ -42,6 +43,15 @@
         postgresql
         # Node.js provides `npx`, used to run the Redocly CLI for API docs
         pkgs.nodejs
+
+        pkgs.python312
+        pkgs.kubectl
+        pkgs.kubernetes-helm
+        pkgs.helmfile
+        pkgs.vals
+        pkgs.vault
+        pkgs.yq-go
+        pkgs.ansible
       ];
 
       buildInputs = [
