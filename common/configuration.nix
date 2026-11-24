@@ -232,6 +232,7 @@
     xwayland-satellite
     claude-code
     discord
+    ladybird
     # Mumble's native PipeWire backend spins in its SCHED_RR data-loop thread,
     # blowing the 200ms RLIMIT_RTTIME rtkit grants it, so the kernel SIGKILLs
     # the process a few seconds after startup. Drop it and use PulseAudio
