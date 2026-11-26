@@ -1,10 +1,11 @@
-{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, nordend, ... }:
 
 {
   # nixpkgs-unstable still ships mise 2026.10.17, but tsd-deployment requires
   # >= 2026.11.3 (min_version in .mise/config.toml). Use upstream's static musl
   # release until nixpkgs catches up. Drop this overlay once it does.
   nixpkgs.overlays = [
+    nordend.overlays.default
     (final: prev: {
       mise = prev.stdenvNoCC.mkDerivation {
         pname = "mise";
@@ -284,6 +285,7 @@
     libnotify
     jq
     ranger
+    pkgs.nordend
     thunar
     thunar-volman  # volume management plugin (auto-mount in Thunar)
     tumbler        # thumbnail service for Thunar

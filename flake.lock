@@ -68,12 +68,33 @@
         "type": "github"
       }
     },
+    "nordend": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795693900,
+        "narHash": "sha256-Z+CYR+nu3oiNxA/aY/s+tXKGafnOLcZB3IbMuDWXsEY=",
+        "owner": "0rgl",
+        "repo": "nordend-fm",
+        "rev": "ac7c1de635dea30ac5f6232e62d278fb33986516",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0rgl",
+        "repo": "nordend-fm",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-matterhorn": "nixpkgs-matterhorn",
-        "nixpkgs-opencode": "nixpkgs-opencode"
+        "nixpkgs-opencode": "nixpkgs-opencode",
+        "nordend": "nordend"
       }
     }
   },

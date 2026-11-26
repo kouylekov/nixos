@@ -11,13 +11,17 @@
     # is specific to the nixpkgs source build. Pin the last good one, 1.18.29.
     # Drop this once nixpkgs ships a build that works again.
     nixpkgs-opencode.url = "github:NixOS/nixpkgs/d91a239ca0118ff10ee22ba54f48929c38ab8114";
+    nordend = {
+      url = "github:0rgl/nordend-fm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, home-manager }:
+  outputs = { self, nixpkgs, nixpkgs-matterhorn, nixpkgs-opencode, nordend, home-manager }:
   let
     system = "x86_64-linux";
     pkgs-matterhorn = import nixpkgs-matterhorn { inherit system; };
@@ -25,7 +29,7 @@
   in {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode nordend; };
       modules = [
         ./hosts/desktop/configuration.nix
         home-manager.nixosModules.home-manager
@@ -34,7 +38,7 @@
 
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit pkgs-matterhorn pkgs-opencode; };
+      specialArgs = { inherit pkgs-matterhorn pkgs-opencode nordend; };
       modules = [
         ./hosts/laptop/configuration.nix
         home-manager.nixosModules.home-manager
