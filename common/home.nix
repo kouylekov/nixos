@@ -21,8 +21,8 @@
     "swaylock/config".source = link "swaylock/config";
     "matterhorn/config.ini".source = link "matterhorn/config.ini";
     "matterhorn/notify".source = link "matterhorn/notify";
-    "opencode/config.json" = {
-      source = link "opencode/config.json";
+    "opencode/opencode.json" = {
+      source = link "opencode/opencode.json";
       force = true;
     };
   };
