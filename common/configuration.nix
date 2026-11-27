@@ -1,11 +1,10 @@
-{ config, pkgs, lib, pkgs-matterhorn, pkgs-opencode, nordend, ... }:
+{ config, pkgs, lib, pkgs-matterhorn, ... }:
 
 {
   # nixpkgs-unstable still ships mise 2026.10.17, but tsd-deployment requires
   # >= 2026.11.3 (min_version in .mise/config.toml). Use upstream's static musl
   # release until nixpkgs catches up. Drop this overlay once it does.
   nixpkgs.overlays = [
-    nordend.overlays.default
     (final: prev: {
       mise = prev.stdenvNoCC.mkDerivation {
         pname = "mise";
@@ -54,8 +53,7 @@
   services.gnome.gcr-ssh-agent.enable = false;
   services.printing.enable = true;
   services.udisks2.enable = true;
-  # Temporarily disabled due to meson build race condition in nixos-unstable
-  # services.flatpak.enable = true;
+  services.flatpak.enable = true;
   services.fwupd.enable = true;
   # `fwupdmgr refresh` runs as the unprivileged fwupd-refresh user and asks
   # polkit for authorization, but upstream's unit has no ordering on polkit.
@@ -193,13 +191,7 @@
     dockerCompat = true;
     defaultNetwork.settings.dns_enabled = true;
   };
-  nixpkgs.config = {
-    allowUnfree = true;
-    # omnissa-horizon-client still pulls gtk2 into its FHS environment, but
-    # nixpkgs now marks gtk+ as broken ahead of its removal in NixOS 27.05.
-    # Drop this once Horizon stops depending on gtk2.
-    problems.handlers."gtk+".broken = "warn";
-  };
+  nixpkgs.config.allowUnfree = true;
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -225,15 +217,13 @@
 
     waybar
     fuzzel
-    # Pinned to 1.18.29 — see the nixpkgs-opencode input in flake.nix
-    pkgs-opencode.opencode
+    opencode
     alacritty
     # Niri has no built-in XWayland; it spawns this on demand for X11 apps
     # (Steam, Discord, Zoom, Horizon, matterhorn's xclip, ...).
     xwayland-satellite
     claude-code
     discord
-    ladybird
     # Mumble's native PipeWire backend spins in its SCHED_RR data-loop thread,
     # blowing the 200ms RLIMIT_RTTIME rtkit grants it, so the kernel SIGKILLs
     # the process a few seconds after startup. Drop it and use PulseAudio
@@ -285,7 +275,6 @@
     libnotify
     jq
     ranger
-    pkgs.nordend
     thunar
     thunar-volman  # volume management plugin (auto-mount in Thunar)
     tumbler        # thumbnail service for Thunar
