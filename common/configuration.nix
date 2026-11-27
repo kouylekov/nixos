@@ -211,6 +211,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    # Secondary browser: Chromium without Google's proprietary blobs/services.
+    # Firefox stays the default (see BROWSER/xdg.mime above).
+    ungoogled-chromium
+
     # Display manager theme
     sddm-astronaut
     qt5.qtgraphicaleffects
